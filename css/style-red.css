@@ -1070,13 +1070,14 @@ a:hover {
 ======================================*/
 
 footer {
-  text-align: center;
+  text-align: left;
   color: #0f0101;
   padding-bottom: 4rem;
 }
 
 footer .copyright {
   margin-bottom: .3rem;
+ 
 }
 
 footer .credits {
@@ -1089,7 +1090,7 @@ footer .credits a {
 
 .splat {
   position: absolute;
-  left: 550px;
+  right: 0px;
   bottom: 20px;
 
 }
