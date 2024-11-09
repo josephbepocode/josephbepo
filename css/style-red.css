@@ -1087,6 +1087,12 @@ footer .credits a {
   color: #040000;
 }
 
+.splat {
+  position: absolute;
+  left: 550px;
+  bottom: 20px;
+
+}
 /*======================================
 //--//-->   CONtaCT FORM
 ======================================*/
