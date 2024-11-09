@@ -1094,6 +1094,12 @@ footer .credits a {
   bottom: 20px;
 
 }
+.splat img {
+  max-width: 100%;  /* The image will not exceed its container's width */
+  height: auto;     /* Maintain aspect ratio */
+  width: 100%;      /* This will make the image fill its container */
+  display: block;   /* Remove any inline-block spacing */
+}
 /*======================================
 //--//-->   CONtaCT FORM
 ======================================*/
