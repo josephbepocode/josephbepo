@@ -487,7 +487,7 @@ a:hover {
 
 .navbar-b.navbar-trans .nav-link:hover:before,
 .navbar-b.navbar-reduce .nav-link:hover:before {
-  width: 35px;
+  width: 25px;
 }
 
 .navbar-b.navbar-trans .show > .nav-link:before,
@@ -498,11 +498,11 @@ a:hover {
 .navbar-b.navbar-reduce .active > .nav-link:before,
 .navbar-b.navbar-reduce .nav-link.show:before,
 .navbar-b.navbar-reduce .nav-link.active:before {
-  width: 35px;
+  width: 25px;
 }
 
 .navbar-b.navbar-trans .nav-link:before {
-  background-color: #fff;
+  background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.8) 100%);
 }
 
 .navbar-b.navbar-trans .nav-link:hover {
@@ -667,13 +667,16 @@ a:hover {
 
 .intro .intro-title {
   color: #fff;
-  font-weight: 600;
-  font-size: 3rem;
+  font-weight: 900;
+  font-size: 4.5rem;
+  letter-spacing: -2px;
+  margin-bottom: 0.5rem;
 }
 
 .intro .intro-subtitle {
-  font-size: 1.5rem;
-  font-weight: 300;
+  font-size: 1.3rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
 }
 
 .intro .text-slider-items {
