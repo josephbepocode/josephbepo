@@ -1,8 +1,6 @@
 /*
-  Theme Name: DevFolio
-  Theme URL: https://bootstrapmade.com/devfolio-bootstrap-portfolio-html-template/
-  Author: BootstrapMade.com
-  License: https://bootstrapmade.com/license/
+  Theme Name: Minimalistic 2026
+  Style: Clean, Modern, Minimal
 */
 
 /*======================================
@@ -10,8 +8,12 @@
 ======================================*/
 
 body {
-  background-color: #f5f5f5;
-  color: #4e4e4e;
+  background-color: #ffffff;
+  background: linear-gradient(135deg, #ffffff 0%, #f9f9f9 100%);
+  color: #2a2a2a;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  font-weight: 400;
+  letter-spacing: -0.3px;
 }
 
 h1,
@@ -20,18 +22,19 @@ h3,
 h4,
 h5,
 h6 {
-  color: #1e1e1e;
+  color: #000000;
+  font-weight: 700;
+  letter-spacing: -1px;
 }
 
 a {
-  color: #1e1e1e;
-  transition: all 0.5s ease-in-out;
+  color: #2a2a2a;
+  transition: all 0.3s ease;
 }
 
 a:hover {
-  color: #be3131;
+  color: #0066ff;
   text-decoration: none;
-  transition: all 0.5s ease-in-out;
 }
 
 .p-r {
@@ -39,15 +42,15 @@ a:hover {
 }
 
 .color-a {
-  color: #be3131;
+  color: #0066ff;
 }
 
 .color-d {
-  color: #f5f5f5;
+  color: #ffffff;
 }
 
 .color-text-a {
-  color: #4e4e4e;
+  color: #2a2a2a;
 }
 
 .box-shadow,
@@ -55,12 +58,13 @@ a:hover {
 .service-box,
 .work-box,
 .card-blog {
-  box-shadow: 0 13px 8px -10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 .box-shadow-a,
 .button:hover {
-  box-shadow: 0 0 0 4px #f5dcdc;
+  box-shadow: none;
+  border: 1px solid #e0e0e0;
 }
 
 .display-5 {
@@ -90,7 +94,7 @@ a:hover {
 }
 
 .overlay-mf {
-  background-color: #be3131;
+  background-color: rgba(26, 26, 26, 0.8);
 }
 
 .overlay-mf {
@@ -100,7 +104,7 @@ a:hover {
   padding: 0;
   height: 100%;
   width: 100%;
-  opacity: .7;
+  opacity: .8;
 }
 
 .paralax-mf {
@@ -159,8 +163,8 @@ a:hover {
 
 .line-mf {
   width: 40px;
-  height: 5px;
-  background-color: #be3131;
+  height: 2px;
+  background-color: #000000;
   margin: 0 auto;
 }
 
@@ -178,8 +182,8 @@ a:hover {
 .title-left:before {
   content: '';
   position: absolute;
-  height: 3px;
-  background-color: #be3131;
+  height: 2px;
+  background-color: #000000;
   width: 100px;
   bottom: -12px;
 }
@@ -216,14 +220,14 @@ a:hover {
   border-radius: 50%;
   line-height: 1.4;
   margin: 0 15px 0 0;
-  box-shadow: 0 0 0 3px #be3131;
+  box-shadow: 0 0 0 2px #333333;
   transition: all 500ms ease;
 }
 
 .socials .ico-circle:hover {
-  background-color: #be3131;
+  background-color: #333333;
   color: #fff;
-  box-shadow: 0 0 0 3px #f5dcdc;
+  box-shadow: 0 0 0 2px #333333;
   transition: all 500ms ease;
 }
 
@@ -326,7 +330,7 @@ a:hover {
 .back-to-top {
   position: fixed;
   display: none;
-  background: #be3131;
+  background: #0066ff;
   color: #fff;
   width: 44px;
   height: 44px;
@@ -364,7 +368,7 @@ a:hover {
   top: calc(50% - 30px);
   left: calc(50% - 30px);
   border: 6px solid #f2f2f2;
-  border-top: 6px solid #be3131;
+  border-top: 6px solid #0066ff;
   border-radius: 50%;
   width: 60px;
   height: 60px;
@@ -481,11 +485,11 @@ a:hover {
 }
 
 .navbar-b.navbar-reduce .nav-link {
-  color: #be3131;
+  color: #0066ff;
 }
 
 .navbar-b.navbar-reduce .nav-link:before {
-  background-color: #be3131;
+  background-color: #0066ff;
 }
 
 .navbar-b.navbar-reduce .nav-link:hover {
@@ -496,11 +500,11 @@ a:hover {
 .navbar-b.navbar-reduce .active > .nav-link,
 .navbar-b.navbar-reduce .nav-link.show,
 .navbar-b.navbar-reduce .nav-link.active {
-  color: #be3131;
+  color: #0066ff;
 }
 
 .navbar-b.navbar-reduce .navbar-brand {
-  color: #be3131;
+  color: #0066ff;
 }
 
 .navbar-b.navbar-reduce .navbar-toggler span {
@@ -1063,6 +1067,10 @@ a:hover {
 
 .contact-mf {
   margin-top: 4rem;
+}
+
+.list-ico span {
+  color: #0066ff;
 }
 
 /*======================================
