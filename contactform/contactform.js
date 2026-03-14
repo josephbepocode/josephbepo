@@ -25,26 +25,20 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    const formData = { name, email, subject, message };
+    const formData = { 
+      from_name: name, 
+      from_email: email, 
+      subject: subject, 
+      message: message 
+    };  // Match your EmailJS template placeholders
 
-    fetch('http://localhost:5500/contact', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(formData)
-    })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          alert('Message sent successfully!');
-          form.reset();
-        } else {
-          alert('Error sending message!');
-        }
-      })
-      .catch(error => {
+    emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", formData)
+      .then(() => {
+        alert('Message sent successfully!');
+        form.reset();
+      }, (error) => {
         console.error('Error:', error);
+        alert('Error sending message! Please try again.');
       });
   });
 
