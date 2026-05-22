@@ -1,735 +1,463 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>Bepo</title>
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <meta content="" name="keywords">
-  <meta content="" name="description">
-
-  <!-- Favicons... Header Alien  -->
-  <link href="img/fav/favicon-32x32.png" rel="icon">
-  <link href="img/fav/apple-touch-icon.png" rel="apple-touch-icon">
-
-  <!-- Bootstrap CSS File -->
-  <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-  <!-- Libraries CSS Files -->
-  <link href="lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-  <link href="lib/animate/animate.min.css" rel="stylesheet">
-  <link href="lib/ionicons/css/ionicons.min.css" rel="stylesheet">
-  <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-  <link href="lib/lightbox/css/lightbox.min.css" rel="stylesheet">
-
-  <!-- Main Stylesheet File -->
-  <link href="css/style-red.css" rel="stylesheet">
-
-  
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Joseph Bepo — Full-Stack Developer & Data Analyst">
+  <title>Joseph Bepo | Full-Stack Developer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
 </head>
+<body>
 
-<body id="page-top">
+  <!-- Preloader -->
+  <div id="preloader">
+    <div class="loader">
+      <div class="loader-ring"></div>
+      <span>JB</span>
+    </div>
+  </div>
 
-  <!--/ Nav Star /-->
-  <nav class="navbar navbar-b navbar-trans navbar-expand-md fixed-top" id="mainNav">
-    <div class="container">
-      <a class="navbar-brand js-scroll" href="#page-top">Bepo  </a>
-      <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarDefault"
-        aria-controls="navbarDefault" aria-expanded="false" aria-label="Toggle navigation">
-        <span></span>
-        <span></span>
-        <span></span>
+  <!-- Three.js animated background -->
+  <canvas id="bg-canvas"></canvas>
+
+  <!-- ====== NAVBAR ====== -->
+  <nav id="navbar" class="navbar">
+    <div class="nav-container">
+      <a href="#home" class="nav-logo">JB<span class="dot">.</span></a>
+      <ul class="nav-menu" id="nav-menu">
+        <li><a href="#home"      class="nav-link active">Home</a></li>
+        <li><a href="#about"     class="nav-link">About</a></li>
+        <li><a href="#services"  class="nav-link">Services</a></li>
+        <li><a href="#portfolio" class="nav-link">Work</a></li>
+        <li><a href="#contact"   class="nav-link">Contact</a></li>
+      </ul>
+      <a href="https://cal.com/joseph-bepo" target="_blank" rel="noopener" class="nav-cta">Hire Me</a>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
       </button>
-      <div class="navbar-collapse collapse justify-content-end" id="navbarDefault">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link js-scroll active" href="#home">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link js-scroll" href="#about">About</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link js-scroll" href="#service">Services</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link js-scroll" href="#work">Work</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link js-scroll" href="https://royalghostbepo.github.io/lovedweb.github.io/future/">NFTs</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link js-scroll" href="#contact">Contact</a>
-          </li>
-        
-        </ul>
-      </div>
     </div>
   </nav>
-  <!--/ Nav End /-->
 
+  <!-- ====== HERO ====== -->
+  <section id="home" class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>Available for work
+      </div>
+      <h1 class="hero-title">
+        Hi, I'm <span class="gradient-text">Joseph Bepo</span>
+      </h1>
+      <h2 class="hero-subtitle">
+        <span class="typed-text"></span><span class="cursor">|</span>
+      </h2>
+      <p class="hero-desc">
+        I build high-performance web applications and transform complex
+        data into actionable insights. Clean code. Real results.
+      </p>
+      <div class="hero-actions">
+        <a href="#portfolio" class="btn btn-primary">View My Work</a>
+        <a href="#contact"   class="btn btn-ghost">Get In Touch</a>
+      </div>
+      <div class="hero-stats">
+        <div class="hs"><span class="hs-n">5+</span><span class="hs-l">Years Exp.</span></div>
+        <div class="hs-div"></div>
+        <div class="hs"><span class="hs-n">20+</span><span class="hs-l">Projects</span></div>
+        <div class="hs-div"></div>
+        <div class="hs"><span class="hs-n">15+</span><span class="hs-l">Clients</span></div>
+      </div>
+    </div>
 
-  <!--/ Intro Skew Star /-->
-  <div id="home" class="intro route bg-image" style="background-image: url(img/new/black.jpeg)">
-    <div class="overlay-intro"></div>
-    <div class="intro-content display-table">
-      <div class="table-cell">
-        <div class="container">
-          <!--<p class="display-6 color-d">Hello, world!</p>-->
-          <h1 class="intro-title mb-4">I am Joseph Bepo</h1>
-          <p class="intro-subtitle"><span class="text-slider-items">Data Analyst,Backend Developer,Project Manager,Frontend Developer,Blockchain Developer </span><strong class="text-slider"></strong></p>
-          <p class="pt-3"><a class="btn btn-primary btn js-scroll px-4" href="#about" role="button">Learn More</a></p> 
+    <!-- Floating tech badges -->
+    <div class="fb fb-1"><i class="fa-brands fa-react"></i><span>React</span></div>
+    <div class="fb fb-2"><i class="fa-solid fa-database"></i><span>Data</span></div>
+    <div class="fb fb-3"><i class="fa-brands fa-python"></i><span>Python</span></div>
+    <div class="fb fb-4"><i class="fa-brands fa-ethereum"></i><span>Web3</span></div>
+
+    <div class="scroll-hint">
+      <div class="scroll-line"></div>
+      <span>Scroll</span>
+    </div>
+  </section>
+
+  <!-- ====== ABOUT ====== -->
+  <section id="about" class="section about">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">About Me</span>
+        <h2 class="section-title">Turning ideas into <span class="gradient-text">reality</span></h2>
+      </div>
+      <div class="about-grid">
+        <div class="about-visual reveal">
+          <div class="about-card">
+            <!-- Replace the div below with <img src="img/photo.jpg" alt="Joseph Bepo"> for a real photo -->
+            <div class="about-avatar"><span>JB</span></div>
+            <div class="about-ring"></div>
+            <div class="exp-badge">
+              <span class="exp-n">5+</span>
+              <span class="exp-l">Years of<br>Experience</span>
+            </div>
+          </div>
+        </div>
+        <div class="about-info reveal">
+          <h3 class="about-heading">Full-Stack Developer<br>& Data Analyst</h3>
+          <p class="about-desc">
+            Passionate developer with 5+ years building scalable web applications, RESTful APIs,
+            and data-driven solutions. I specialize in turning complex problems into clean,
+            maintainable code and delivering measurable results for clients worldwide.
+          </p>
+          <div class="about-details">
+            <div class="detail"><i class="fa-solid fa-location-dot"></i><span>Remote — Available Worldwide</span></div>
+            <div class="detail"><i class="fa-solid fa-envelope"></i><a href="mailto:bepojoseph9@gmail.com">bepojoseph9@gmail.com</a></div>
+            <div class="detail"><i class="fa-solid fa-phone"></i><a href="tel:+14372559415">+1 437-255-9415</a></div>
+          </div>
+          <div class="skills-wrap">
+            <h4 class="skills-lbl">Core Skills</h4>
+            <div class="skill">
+              <div class="skill-hd"><span>Data Analytics</span><span>90%</span></div>
+              <div class="skill-bar"><div class="skill-fill" style="--w:90%"></div></div>
+            </div>
+            <div class="skill">
+              <div class="skill-hd"><span>Full-Stack Dev</span><span>85%</span></div>
+              <div class="skill-bar"><div class="skill-fill" style="--w:85%"></div></div>
+            </div>
+            <div class="skill">
+              <div class="skill-hd"><span>Backend / API</span><span>88%</span></div>
+              <div class="skill-bar"><div class="skill-fill" style="--w:88%"></div></div>
+            </div>
+            <div class="skill">
+              <div class="skill-hd"><span>Blockchain / Web3</span><span>80%</span></div>
+              <div class="skill-bar"><div class="skill-fill" style="--w:80%"></div></div>
+            </div>
+          </div>
+          <a href="#" class="btn btn-primary"><i class="fa-solid fa-download"></i> Download CV</a>
         </div>
       </div>
     </div>
-  </div>
-  <!--/ Intro Skew End /-->
+  </section>
 
-  <section id="about" class="about-mf sect-pt4 route">
+  <!-- ====== SERVICES ====== -->
+  <section id="services" class="section services">
     <div class="container">
-      <div class="row">
-        <div class="col-sm-12">
-          <div class="box-shadow-full">
-            <div class="row">
-              <div class="col-md-6">
-                <div class="row">
-                  <div class="col-sm-6 col-md-5">
-                    <div class="about-img">
-                      <img src="srr/about.jpg" class="img-fluid rounded b-shadow-a" alt="">
-                    </div>
-                  </div>
-                  <div class="col-sm-6 col-md-7">
-                    <div class="about-info">
-                      
-                      <p><span class="title-s">Email: </span> <span> bepojoseph9@gmail.com </span></p>
-                      <p><span class="title-s">Phone: </span> <span>+1 437-255-9415</span></p>
-                    </div>
-                  </div>
-                </div>
-                <div class="skill-mf">
-                  <p class="title-s">Skill</p>
-                  <span>WEB DESIGNING</span> <span class="pull-right">85%</span>
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" style="width: 85%;" aria-valuenow="85" aria-valuemin="0"
-                      aria-valuemax="100"></div>
-                  </div>
-                  <span>DATA ANAlYTICS</span> <span class="pull-right">95%</span>
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" style="width: 95%;" aria-valuenow="95" aria-valuemin="0"
-                      aria-valuemax="100"></div>
-                  </div>
-                  <span>PROGRAMMING</span> <span class="pull-right">85%</span>
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" style="width: 85%;" aria-valuenow="85" aria-valuemin="0"
-                      aria-valuemax="100"></div>
-                  </div>
-                  <span>COMMUNICATION</span> <span class="pull-right">90%</span>
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" style="width: 90%" aria-valuenow="90" aria-valuemin="0"
-                      aria-valuemax="100"></div>
-                  </div>
-                  <span>PROBLEM SOLVING</span> <span class="pull-right">90%</span>
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" style="width: 90%" aria-valuenow="90" aria-valuemin="0"
-                      aria-valuemax="100"></div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="about-me pt-4 pt-md-0">
-                  <div class="title-box-2">
-                    <h5 class="title-left">
-                      About me
-                    </h5>
-                  </div>
-                  <p class="lead">
-                    I'm a skilled web developer with a passion for creating beautiful and functional websites.
-                    I've got a strong foundation in HTML, CSS, and JavaScript, and I'm always eager to learn more and expand my skill set.
-                    Whether it's working with cutting-edge frameworks or diving into the latest design trends, I'm ready to take on any challenge.
-                  </p>
-                  <p class="lead">
-                    I have a fantastic sense of humor and an eagerness to learn and develop.
-                     I am a natural problem solver and possess a unique perspective that enables me to view things from a fresh angle. Additionally, 
-                     I am highly determined and constantly strive to be the best version of myself.
-                     I will continue to shine and never cease pursuing my dreams.
-                  </p>
-                  <p class="lead">
-                    So if you're looking for a web developer who's ready to give you the best, has the skills to be hired, and is inspired by the beautiful possibilities, look no further.
-                     I'm here to help you achieve your goals and make your dreams a reality.
-                  </p>
-                </div>
-              </div>
+      <div class="section-header reveal">
+        <span class="section-tag">What I Do</span>
+        <h2 class="section-title">Services I <span class="gradient-text">Offer</span></h2>
+      </div>
+      <div class="services-grid">
+
+        <div class="svc-card tilt reveal">
+          <div class="svc-icon"><i class="fa-solid fa-code"></i></div>
+          <h3>Full-Stack Development</h3>
+          <p>End-to-end web apps with React, Next.js, Node.js and modern databases.</p>
+          <div class="svc-tags"><span>React</span><span>Node.js</span><span>Next.js</span></div>
+        </div>
+
+        <div class="svc-card tilt reveal">
+          <div class="svc-icon"><i class="fa-solid fa-chart-line"></i></div>
+          <h3>Data Analytics</h3>
+          <p>Data pipelines, interactive dashboards, and ML models to drive business decisions.</p>
+          <div class="svc-tags"><span>Python</span><span>SQL</span><span>Pandas</span></div>
+        </div>
+
+        <div class="svc-card tilt reveal">
+          <div class="svc-icon"><i class="fa-solid fa-server"></i></div>
+          <h3>Backend & APIs</h3>
+          <p>Scalable REST and GraphQL APIs, microservices, and cloud integrations.</p>
+          <div class="svc-tags"><span>Express</span><span>PostgreSQL</span><span>AWS</span></div>
+        </div>
+
+        <div class="svc-card tilt reveal">
+          <div class="svc-icon"><i class="fa-brands fa-ethereum"></i></div>
+          <h3>Blockchain / Web3</h3>
+          <p>Smart contracts, DApps, and token integrations on EVM-compatible chains.</p>
+          <div class="svc-tags"><span>Solidity</span><span>Web3.js</span><span>Hardhat</span></div>
+        </div>
+
+        <div class="svc-card tilt reveal">
+          <div class="svc-icon"><i class="fa-solid fa-mobile-screen"></i></div>
+          <h3>Responsive Design</h3>
+          <p>Pixel-perfect, accessible UIs that work flawlessly on every screen.</p>
+          <div class="svc-tags"><span>CSS</span><span>Tailwind</span><span>Figma</span></div>
+        </div>
+
+        <div class="svc-card tilt reveal">
+          <div class="svc-icon"><i class="fa-solid fa-diagram-project"></i></div>
+          <h3>Project Management</h3>
+          <p>End-to-end delivery using Agile/Scrum — on time, on budget.</p>
+          <div class="svc-tags"><span>Agile</span><span>Jira</span><span>Notion</span></div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== STATS ====== -->
+  <section class="section stats">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-card reveal">
+          <div class="stat-ico"><i class="fa-solid fa-briefcase"></i></div>
+          <div class="stat-body">
+            <div class="stat-val">
+              <span class="counter" data-target="20">0</span><span>+</span>
             </div>
+            <p>Projects Completed</p>
+          </div>
+        </div>
+        <div class="stat-card reveal">
+          <div class="stat-ico"><i class="fa-solid fa-users"></i></div>
+          <div class="stat-body">
+            <div class="stat-val">
+              <span class="counter" data-target="15">0</span><span>+</span>
+            </div>
+            <p>Happy Clients</p>
+          </div>
+        </div>
+        <div class="stat-card reveal">
+          <div class="stat-ico"><i class="fa-solid fa-calendar-check"></i></div>
+          <div class="stat-body">
+            <div class="stat-val">
+              <span class="counter" data-target="5">0</span><span>+</span>
+            </div>
+            <p>Years Experience</p>
+          </div>
+        </div>
+        <div class="stat-card reveal">
+          <div class="stat-ico"><i class="fa-brands fa-github"></i></div>
+          <div class="stat-body">
+            <div class="stat-val">
+              <span class="counter" data-target="30">0</span><span>+</span>
+            </div>
+            <p>GitHub Repos</p>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!--/ Section Services Star /-->
-  <section id="service" class="services-mf route">
+  <!-- ====== PORTFOLIO ====== -->
+  <section id="portfolio" class="section portfolio">
     <div class="container">
-      <div class="row">
-        <div class="col-sm-12">
-          <div class="title-box text-center">
-            <h3 class="title-a">
-              Services
-            </h3>
-            <p class="subtitle-a">
-              From my various skills, you can see how I could be of service.
-            </p>
-            <div class="line-mf"></div>
-          </div>
-        </div>
+      <div class="section-header reveal">
+        <span class="section-tag">My Work</span>
+        <h2 class="section-title">Featured <span class="gradient-text">Projects</span></h2>
       </div>
-      <div class="row">
-        <div class="col-md-4">
-          <div class="service-box">
-            <div class="service-ico">
-              <span class="ico-circle"><i class="ion-monitor"></i></span>
+      <div class="port-filters reveal">
+        <button class="f-btn active" data-filter="all">All</button>
+        <button class="f-btn" data-filter="webdev">Web Dev</button>
+        <button class="f-btn" data-filter="data">Data</button>
+        <button class="f-btn" data-filter="blockchain">Blockchain</button>
+      </div>
+      <div class="port-grid">
+
+        <div class="proj-card reveal" data-cat="data">
+          <div class="proj-inner">
+            <div class="proj-front">
+              <div class="proj-img pi-1"><div class="pi-icon"><i class="fa-solid fa-chart-bar"></i></div></div>
+              <div class="proj-meta">
+                <span class="proj-cat">Data Analytics</span>
+                <h3>Story Mapping Dashboard</h3>
+                <p>Interactive analytics dashboard for user journey mapping with real-time data.</p>
+              </div>
             </div>
-            <div class="service-content">
-              <h2 class="s-title">Web Design</h2>
-              <p class="s-description text-center">
-                I develop stunning, user-centric websites with technical expertise, 
-                ensuring seamless browsing and optimal functionality across platforms  
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="service-box">
-            <div class="service-ico">
-              <span class="ico-circle"><i class="ion-code-working"></i></span>
-            </div>
-            <div class="service-content">
-              <h2 class="s-title">Web Development</h2>
-              <p class="s-description text-center">
-                I create robust and engaging web applications,
-                 utilizing cutting-edge technologies to deliver exceptional user experiences and meet business objectives.
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="service-box">
-            <div class="service-ico">
-              <span class="ico-circle"><i class="ion-camera"></i></span>
-            </div>
-            <div class="service-content">
-              <h2 class="s-title">Photography</h2>
-              <p class="s-description text-center">
-                I capture stunning and memorable photographs, 
-                using advanced techniques to create visual stories that captivate and inspire, perfectly suited for any occasion or purpose.
-              </p>
+            <div class="proj-back">
+              <h3>Story Mapping Dashboard</h3>
+              <p>Full-featured analytics dashboard with real-time visualization, user journey tracking, and automated reporting pipelines.</p>
+              <div class="proj-tech"><span>MongoDB</span><span>Prisma</span><span>SQL</span><span>Python</span></div>
+              <div class="proj-links">
+                <a href="https://github.com/josephbepocode" target="_blank" class="plink"><i class="fa-brands fa-github"></i> Code</a>
+                <a href="#" class="plink plink-live"><i class="fa-solid fa-arrow-up-right-from-square"></i> Live</a>
+              </div>
             </div>
           </div>
         </div>
-        <div class="col-md-4">
-          <div class="service-box">
-            <div class="service-ico">
-              <span class="ico-circle"><i class="ion-android-phone-portrait"></i></span>
+
+        <div class="proj-card reveal" data-cat="webdev">
+          <div class="proj-inner">
+            <div class="proj-front">
+              <div class="proj-img pi-2"><div class="pi-icon"><i class="fa-brands fa-react"></i></div></div>
+              <div class="proj-meta">
+                <span class="proj-cat">Web Development</span>
+                <h3>Full-Stack Web Platform</h3>
+                <p>Modern platform with SSR, JWT auth, and real-time notifications.</p>
+              </div>
             </div>
-            <div class="service-content">
-              <h2 class="s-title">Responsive Design</h2>
-              <p class="s-description text-center">
-                I design responsive and adaptive interfaces, 
-                ensuring seamless and consistent user experiences across all devices and screen sizes, enhancing usability and accessibility.
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="service-box">
-            <div class="service-ico">
-              <span class="ico-circle"><i class="ion-paintbrush"></i></span>
-            </div>
-            <div class="service-content">
-              <h2 class="s-title">Graphic Design</h2>
-              <p class="s-description text-center">
-                I craft visually compelling and creative graphic designs, 
-                employing innovative design principles to effectively communicate your brand's message and leave a lasting impression.
-              </p>
+            <div class="proj-back">
+              <h3>Full-Stack Web Platform</h3>
+              <p>Scalable web application with server-side rendering, role-based access control, and real-time notifications via WebSockets.</p>
+              <div class="proj-tech"><span>React</span><span>Next.js</span><span>Node.js</span><span>PostgreSQL</span></div>
+              <div class="proj-links">
+                <a href="https://github.com/josephbepocode" target="_blank" class="plink"><i class="fa-brands fa-github"></i> Code</a>
+                <a href="#" class="plink plink-live"><i class="fa-solid fa-arrow-up-right-from-square"></i> Live</a>
+              </div>
             </div>
           </div>
         </div>
-        <div class="col-md-4">
-          <div class="service-box">
-            <div class="service-ico">
-              <span class="ico-circle"><i class="ion-stats-bars"></i></span>
+
+        <div class="proj-card reveal" data-cat="data">
+          <div class="proj-inner">
+            <div class="proj-front">
+              <div class="proj-img pi-3"><div class="pi-icon"><i class="fa-brands fa-python"></i></div></div>
+              <div class="proj-meta">
+                <span class="proj-cat">Python / Data</span>
+                <h3>Python Analytics Library</h3>
+                <p>Open-source data transformation and visualization utilities.</p>
+              </div>
             </div>
-            <div class="service-content">
-              <h2 class="s-title">Marketing Services</h2>
-              <p class="s-description text-center">
-                I develop strategic and impactful marketing campaigns,
-                 leveraging the latest tools and insights to drive brand awareness, engagement, and business growth.
-              </p>
+            <div class="proj-back">
+              <h3>Python Analytics Library</h3>
+              <p>Modular Python library with 15+ data cleaning, transformation, and visualization utilities. Available as a PyPI package.</p>
+              <div class="proj-tech"><span>Python</span><span>Pandas</span><span>NumPy</span><span>Matplotlib</span></div>
+              <div class="proj-links">
+                <a href="https://github.com/josephbepocode" target="_blank" class="plink"><i class="fa-brands fa-github"></i> Code</a>
+                <a href="#" class="plink plink-live"><i class="fa-solid fa-arrow-up-right-from-square"></i> Live</a>
+              </div>
             </div>
           </div>
         </div>
+
+        <div class="proj-card reveal" data-cat="blockchain">
+          <div class="proj-inner">
+            <div class="proj-front">
+              <div class="proj-img pi-4"><div class="pi-icon"><i class="fa-brands fa-ethereum"></i></div></div>
+              <div class="proj-meta">
+                <span class="proj-cat">Blockchain</span>
+                <h3>DeFi Exchange DApp</h3>
+                <p>Decentralized token exchange with AMM liquidity pools.</p>
+              </div>
+            </div>
+            <div class="proj-back">
+              <h3>DeFi Exchange DApp</h3>
+              <p>Smart contract-powered DEX with automated market maker, ERC-20 token swapping, and a React frontend via ethers.js.</p>
+              <div class="proj-tech"><span>Solidity</span><span>Hardhat</span><span>ethers.js</span><span>React</span></div>
+              <div class="proj-links">
+                <a href="https://github.com/josephbepocode" target="_blank" class="plink"><i class="fa-brands fa-github"></i> Code</a>
+                <a href="#" class="plink plink-live"><i class="fa-solid fa-arrow-up-right-from-square"></i> Live</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="proj-card reveal" data-cat="webdev">
+          <div class="proj-inner">
+            <div class="proj-front">
+              <div class="proj-img pi-5"><div class="pi-icon"><i class="fa-solid fa-server"></i></div></div>
+              <div class="proj-meta">
+                <span class="proj-cat">Backend / API</span>
+                <h3>REST API Boilerplate</h3>
+                <p>Production-ready Express API with auth, rate limiting & docs.</p>
+              </div>
+            </div>
+            <div class="proj-back">
+              <h3>REST API Boilerplate</h3>
+              <p>Enterprise-grade REST API starter with JWT auth, RBAC, rate limiting, Swagger docs, and one-command Docker deployment.</p>
+              <div class="proj-tech"><span>Node.js</span><span>Express</span><span>MongoDB</span><span>Docker</span></div>
+              <div class="proj-links">
+                <a href="https://github.com/josephbepocode" target="_blank" class="plink"><i class="fa-brands fa-github"></i> Code</a>
+                <a href="#" class="plink plink-live"><i class="fa-solid fa-arrow-up-right-from-square"></i> Live</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="proj-card reveal" data-cat="data">
+          <div class="proj-inner">
+            <div class="proj-front">
+              <div class="proj-img pi-6"><div class="pi-icon"><i class="fa-solid fa-brain"></i></div></div>
+              <div class="proj-meta">
+                <span class="proj-cat">Machine Learning</span>
+                <h3>ML Price Predictor</h3>
+                <p>LSTM model for real-time price forecasting — 92% accuracy.</p>
+              </div>
+            </div>
+            <div class="proj-back">
+              <h3>ML Price Predictor</h3>
+              <p>Trained LSTM and regression models on historical time-series data. Deployed as a Flask API serving real-time predictions at scale.</p>
+              <div class="proj-tech"><span>Python</span><span>TensorFlow</span><span>Flask</span><span>Scikit-learn</span></div>
+              <div class="proj-links">
+                <a href="https://github.com/josephbepocode" target="_blank" class="plink"><i class="fa-brands fa-github"></i> Code</a>
+                <a href="#" class="plink plink-live"><i class="fa-solid fa-arrow-up-right-from-square"></i> Live</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
-  <!--/ Section Services End /-->
 
-  <div class="section-counter paralax-mf bg-image" style="background-image: url(img/counters-bg.jpg)">
-    <div class="overlay-mf"></div>
+  <!-- ====== CONTACT ====== -->
+  <section id="contact" class="section contact">
     <div class="container">
-      <div class="row">
-        <div class="col-sm-3 col-lg-3">
-          <div class="counter-box">
-            <div class="counter-ico">
-              <span class="ico-circle"><i class="ion-checkmark-round"></i></span>
-            </div>
-            <div class="counter-num">
-              <p class="counter">50</p>
-              <span class="counter-text">WORKS COMPLETED</span>
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-3 col-lg-3">
-          <div class="counter-box pt-4 pt-md-0">
-            <div class="counter-ico">
-              <span class="ico-circle"><i class="ion-ios-calendar-outline"></i></span>
-            </div>
-            <div class="counter-num">
-              <p class="counter">5</p>
-              <span class="counter-text">YEARS OF EXPERIENCE</span>
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-3 col-lg-3">
-          <div class="counter-box pt-4 pt-md-0">
-            <div class="counter-ico">
-              <span class="ico-circle"><i class="ion-ios-people"></i></span>
-            </div>
-            <div class="counter-num">
-              <p class="counter">5</p>
-              <span class="counter-text">TOTAL CLIENTS</span>
-            </div>
-          </div>
-        </div>
-        <!--
-        <div class="col-sm-3 col-lg-3">
-          <div class="counter-box pt-4 pt-md-0">
-            <div class="counter-ico">
-              <span class="ico-circle"><i class="ion-ribbon-a"></i></span>
-            </div>
-            
-              <div class="counter-num">
-              <p class="counter">10</p>
-              <span class="counter-text">AWARD/CERTIFICATES</span>
-            </div>
-            -->
-          
-          </div>
-        </div>
+      <div class="section-header reveal">
+        <span class="section-tag">Get In Touch</span>
+        <h2 class="section-title">Let's <span class="gradient-text">Work Together</span></h2>
       </div>
-    </div>
-  </div>
+      <div class="contact-grid">
 
-  <!--/ Section Portfolio Star 
-  <section id="work" class="portfolio-mf sect-pt4 route">
-    <div class="container">
-      <div class="row">
-        <div class="col-sm-12">
-          <div class="title-box text-center">
-            <h3 class="title-a">
-              PODCAST
-            </h3>
-            <p class="subtitle-a">
-              Check this out...
-            </p>
-            <div class="line-mf"></div> 
+        <div class="contact-info reveal">
+          <p class="contact-intro">
+            Have a project in mind? I'd love to hear about it.
+            Drop me a message or book a call directly.
+          </p>
+          <div class="ci-list">
+            <div class="ci">
+              <div class="ci-icon"><i class="fa-solid fa-envelope"></i></div>
+              <div><span>Email</span><a href="mailto:bepojoseph9@gmail.com">bepojoseph9@gmail.com</a></div>
+            </div>
+            <div class="ci">
+              <div class="ci-icon"><i class="fa-solid fa-phone"></i></div>
+              <div><span>Phone</span><a href="tel:+14372559415">+1 437-255-9415</a></div>
+            </div>
+            <div class="ci">
+              <div class="ci-icon"><i class="fa-solid fa-clock"></i></div>
+              <div><span>Availability</span><p>Mon–Fri, 9am–6pm EST</p></div>
+            </div>
+          </div>
+          <a href="https://cal.com/joseph-bepo" target="_blank" rel="noopener" class="btn btn-primary btn-cal">
+            <i class="fa-solid fa-calendar-plus"></i> Book a Free Call
+          </a>
+          <div class="socials">
+            <a href="https://github.com/josephbepocode" target="_blank" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+            <a href="#" target="_blank" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+            <a href="#" target="_blank" aria-label="Twitter / X"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="#" target="_blank" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
           </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-md-4">
-          <div class="work-box">
-            <a href="img/work-1.jpg" data-lightbox="gallery-mf">
-              <div class="work-img">
-                <img src="img/work-1.jpg" alt="" class="img-fluid">
-              </div>
-              <div class="work-content">
-                <div class="row">
-                  <div class="col-sm-8">
-                    <h2 class="w-title">Coming Soon...</h2>
-                    <div class="w-more">
-                      <span class="w-ctegory">Web Design</span> / <span class="w-date">18 Sep. </span>
-                    </div>
-                  </div>
-                  <div class="col-sm-4">
-                    <div class="w-like">
-                      <span class="ion-ios-plus-outline"></span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </a>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="work-box">
-            <a href="img/work-2.jpg" data-lightbox="gallery-mf">
-              <div class="work-img">
-                <img src="img/work-2.jpg" alt="" class="img-fluid">
-              </div>
-              <div class="work-content">
-                <div class="row">
-                  <div class="col-sm-8">
-                    <h2 class="w-title">Coming Soon...</h2>
-                    <div class="w-more">
-                      <span class="w-ctegory">Web Design</span> / <span class="w-date">18 Sep. </span>
-                    </div>
-                  </div>
-                  <div class="col-sm-4">
-                    <div class="w-like">
-                      <span class="ion-ios-plus-outline"></span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </a>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="work-box">
-            <a href="img/work-3.jpg" data-lightbox="gallery-mf">
-              <div class="work-img">
-                <img src="img/work-3.jpg" alt="" class="img-fluid">
-              </div>
-              <div class="work-content">
-                <div class="row">
-                  <div class="col-sm-8">
-                    <h2 class="w-title">Coming Soon...</h2>
-                    <div class="w-more">
-                      <span class="w-ctegory">Web Design</span> / <span class="w-date">18 Sep. </span>
-                    </div>
-                  </div>
-                  <div class="col-sm-4">
-                    <div class="w-like">
-                      <span class="ion-ios-plus-outline"></span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </a>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="work-box">
-            <a href="img/work-4.jpg" data-lightbox="gallery-mf">
-              <div class="work-img">
-                <img src="img/work-4.jpg" alt="" class="img-fluid">
-              </div>
-              <div class="work-content">
-                <div class="row">
-                  <div class="col-sm-8">
-                    <h2 class="w-title">Coming Soon...</h2>
-                    <div class="w-more">
-                      <span class="w-ctegory">Web Design</span> / <span class="w-date">18 Sep. </span>
-                    </div>
-                  </div>
-                  <div class="col-sm-4">
-                    <div class="w-like">
-                      <span class="ion-ios-plus-outline"></span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </a>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="work-box">
-            <a href="img/work-5.jpg" data-lightbox="gallery-mf">
-              <div class="work-img">
-                <img src="img/work-5.jpg" alt="" class="img-fluid">
-              </div>
-              <div class="work-content">
-                <div class="row">
-                  <div class="col-sm-8">
-                    <h2 class="w-title">Coming Soon...</h2>
-                    <div class="w-more">
-                      <span class="w-ctegory">Web Design</span> / <span class="w-date">18 Sep. </span>
-                    </div>
-                  </div>
-                  <div class="col-sm-4">
-                    <div class="w-like">
-                      <span class="ion-ios-plus-outline"></span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </a>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="work-box">
-            <a href="img/work-6.jpg" data-lightbox="gallery-mf">
-              <div class="work-img">
-                <img src="img/work-6.jpg" alt="" class="img-fluid">
-              </div>
-              <div class="work-content">
-                <div class="row">
-                  <div class="col-sm-8">
-                    <h2 class="w-title">Coming Soon...</h2>
-                    <div class="w-more">
-                      <span class="w-ctegory">Web Design</span> / <span class="w-date">18 Sep. </span>
-                    </div>
-                  </div>
-                  <div class="col-sm-4">
-                    <div class="w-like">
-                      <span class="ion-ios-plus-outline"></span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </a>
-          </div>
-        </div>
-        
+
+        <form class="contact-form reveal" id="contact-form"
+              action="https://formspree.io/f/xeedgdjw" method="POST">
+          <div class="fg"><input type="text"  name="name"    placeholder="Your Name"    required></div>
+          <div class="fg"><input type="email" name="email"   placeholder="Your Email"   required></div>
+          <div class="fg"><input type="text"  name="subject" placeholder="Subject"      required></div>
+          <div class="fg"><textarea name="message" placeholder="Your Message" rows="5"  required></textarea></div>
+          <button type="submit" class="btn btn-primary btn-full" id="submit-btn">
+            <span id="btn-text">Send Message</span>
+            <i class="fa-solid fa-paper-plane"></i>
+          </button>
+          <div id="form-status" class="form-status"></div>
+        </form>
+
       </div>
     </div>
   </section>
-  
- Section Portfolio End /-->
 
-  <!--/ Section Testimonials Star /--
-  <div class="testimonials paralax-mf bg-image" style="background-image: url(img/overlay-bg.jpg)">
-    <div class="overlay-mf"></div>
+  <!-- ====== FOOTER ====== -->
+  <footer class="footer">
     <div class="container">
-      <div class="row">
-        <div class="col-md-12">
-          <div id="testimonial-mf" class="owl-carousel owl-theme">
-            <div class="testimonial-box">
-              <div class="author-test">
-                <img src="img/testimonial-2.jpg" alt="" class="rounded-circle b-shadow-a">
-                <span class="author">Xavi Alonso</span>
-              </div>
-              <div class="content-test">
-                <p class="description lead">
-        <!-- Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Lorem ipsum dolor sit amet,
-                  consectetur adipiscing elit. /--
-                </p>
-                <span class="comit"><i class="fa fa-quote-right"></i></span>
-              </div>
-            </div>
-            <div class="testimonial-box">
-              <div class="author-test">
-                <img src="img/testimonial-4.jpg" alt="" class="rounded-circle b-shadow-a">
-                <span class="author">Marta Socrate</span>
-              </div>
-              <div class="content-test">
-                <p class="description lead">
-                  <!--Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Lorem ipsum dolor sit amet,
-                  consectetur adipiscing elit. /--
-                </p>
-                <span class="comit"><i class="fa fa-quote-right"></i></span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <a href="#home" class="footer-logo">JB<span class="dot">.</span></a>
+      <p>Building great things, one line at a time.</p>
+      <p class="footer-copy">&copy; <span id="year"></span> Joseph Bepo. All rights reserved.</p>
     </div>
-  </div>
+  </footer>
 
-  <!--/ Section Blog Star /-->
-  <section id="blog" class="blog-mf sect-pt4 route">
-    <div class="container">
-      <div class="row">
-        <div class="col-sm-12">
-          <div class="title-box text-center">
-            <h3 class="title-a">
-              PORTFOLIO
-            </h3>
-            <p class="subtitle-a">
-              Check this out...
-            </p>
-            <div class="line-mf"></div>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-4">
-          <div class="card card-blog">
-            <div class="card-img">
-              <a href="blog-single.html"><img src="img/data.jpeg" alt="" class="img-fluid"></a>
-            </div>
-            <div class="card-body">
-              <div class="card-category-box">
-                <div class="card-category">
-                  <h6 class="category">DATA ENTRY</h6>
-                </div>
-              </div>
-              <h3 class="card-title">Story mapping</a></h3>
-              <p class="card-description">
-                diligently worked on user story mapping, strategized a feature's web development,
-                 created a success-tracking dashboard, and planned next week's tasks.
-              </p>
-            </div>
-            <div class="card-footer">
-              <div class="post-author">
-                <a href="#">
-                  <img src="srr/data.jpeg" alt="" class="avatar rounded-circle">
-                  <span class="author">Mongo DB, Prisma, SQL</span>
-                </a>
-              </div>
-              <div class="post-date">
-                <span class="ion-ios-clock-outline"></span> 
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card card-blog">
-            <div class="card-img">
-              <a href="blog-single.html"><img src="img/ants.jpeg" alt="" class="img-fluid"></a>
-            </div>
-            <div class="card-body">
-              <div class="card-category-box">
-                <div class="card-category">
-                  <h6 class="category">Web Development</h6>
-                </div>
-              </div>
-              <h3 class="card-title">Story mapping</a></h3>
-              <p class="card-description">
-                diligently worked on user story mapping, strategized a feature's web development,
-                 created a success-tracking dashboard, and planned next week's tasks.
-              </p>
-            </div>
-            <div class="card-footer">
-              <div class="post-author">
-                <a href="#">
-                  <img src="srr/ants.jpeg" alt="" class="avatar rounded-circle">
-                  <span class="author">React, Solidity, Next, HTML</span>
-                </a>
-              </div>
-              <div class="post-date">
-                <span class="ion-ios-clock-outline"></span> 
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card card-blog">
-            <div class="card-img">
-              <a href="blog-single.html"><img src="img/snake.jpg" alt="" class="img-fluid"></a>
-            </div>
-            <div class="card-body">
-              <div class="card-category-box">
-                <div class="card-category">
-                  <a href="https://github.com/josephbepocode/python-apps/">
-                    <h6 class="category">PYTHON LIBRARY</h6>
-                  </a>
-                </div>
-              </div>
-              <h3 class="card-title">python apps</a></h3>
-              <p class="card-description">
-                A library of python application I wrote... This is not everything, I will share more along the way
-              </p>
-            </div>
-            <div class="card-footer">
-              <div class="post-author">
-                <a href="#">
-                  <img src="srr/data.jpeg" alt="" class="avatar rounded-circle">
-                  <span class="author">Python, MySQL</span>
-                </a>
-              </div>
-              <div class="post-date">
-                <span class="ion-ios-clock-outline"></span> 40 min
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  <!--/ Section Blog End /-->
+  <!-- Back to top -->
+  <button id="btt" aria-label="Back to top"><i class="fa-solid fa-arrow-up"></i></button>
 
-  <!--/ Section Contact-Footer Star /-->
-  <section class="paralax-mf footer-paralax bg-image sect-mt4 route" style="background-image: url(img/counters-bg.jpg)">
-    <div class="overlay-mf"></div>
-    <div class="container">
-            <div id="contact" class="box-shadow-full">
-                <div class="col-md-6">
-                  <div class="title-box-2">
-
-                    <div class="divcen"  style="width:200px;height:50px;display:flex;justify-content:center;align-items:center;overflow:hidden;">
-
-                </div>
-              </div>
-                  <p class="lead">
-                   CONTACT ME
-                  </p>
-                    <!-- Cal floating-popup embed code begins -->
-<script type="text/javascript">
-  (function (C, A, L) { let p = function (a, ar) { a.q.push(ar); }; let d = C.document; C.Cal = C.Cal || function () { let cal = C.Cal; let ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }; const namespace = ar[1]; api.q = api.q || []; if(typeof namespace === "string"){cal.ns[namespace] = cal.ns[namespace] || api;p(cal.ns[namespace], ar);p(cal, ["initNamespace", namespace]);} else p(cal, ar); return;} p(cal, ar); }; })(window, "https://app.cal.com/embed/embed.js", "init");
-Cal("init", "30min", {origin:"https://cal.com"});
-
-  Cal.ns["30min"]("floatingButton", {"calLink":"josephbepo/30min","config":{"layout":"month_view","theme":"auto"},"buttonText":"Get in touch . . .","buttonPosition":"bottom-left","buttonColor":"#7ab2b2","buttonTextColor":"#ffffff"}); 
-  Cal.ns["30min"]("ui", {"styles":{"branding":{"brandColor":"#c82424"}},"hideEventTypeDetails":false,"layout":"month_view"});
-  </script>
-  <!-- Cal floating-popup embed code ends -->
-                  <div class="title-box-2 pt-4 pt-md-0">
-                    <ul class="list-ico">
-                      <li><span class="ion-ios-location"></span> REMOTE </li>
-                      <li><span class="ion-ios-telephone"></span>1 437 255 9415  </li>
-                      <li><span class="ion-email"></span> bepojoseph9@gmail.com</li>
-                    </ul>
-                  </div>
-                  <div class="socials">
-                    <ul>
-                      <li><a href="https://github.com/royalghostbepo"><span class="ico-circle"><i class="ion-social-github"></i></span></a></li>
-                      <li><a href="https://t.co/hIMD4sklgi"><span class="ico-circle"><i class="ion-social-instagram"></i></span></a></li>
-                      <li><a href="https://x.com/youfoundbepo"><span class="ico-circle"><i class="ion-social-twitter"></i></span></a></li>
-                      <li><a href="https://www.youtube.com/channel/UCv_WEddBKP47NniOmUMrcgQ"><span class="ico-circle"><i class="ion-social-youtube"></i></span></a></li>
-                  </div>
-
-                  
-    <footer>
-      <div class="container">
-        <div class="row">
-          <div class="col-sm-12">
-            <div class="copyright-box">
-              <p class="copyright">&copy; <strong>Bepo</strong>. <span id="year"></span> All Rights Reserved</p>
-              <div class="credits"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </footer>
-  </section>
- 
-  
-  <!--/ Section Contact-footer End /-->
-
-  <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
-  <div id="preloader"></div>
-
-  <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
-  </script>
-  
-
-  <!-- JavaScript Libraries -->
-  <script src="lib/jquery/jquery.min.js"></script>
-  <script src="lib/jquery/jquery-migrate.min.js"></script>
-  <script src="lib/popper/popper.min.js"></script>
-  <script src="lib/bootstrap/js/bootstrap.min.js"></script>
-  <script src="lib/easing/easing.min.js"></script>
-  <script src="lib/counterup/jquery.waypoints.min.js"></script>
-  <script src="lib/counterup/jquery.counterup.js"></script>
-  <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-  <script src="lib/lightbox/js/lightbox.min.js"></script>
-  <script src="lib/typed/typed.min.js"></script>
-  <!-- Contact Form JavaScript File -->
-  <script type="module" src="contactform/contactform.js"></script>
-
-  <script type="module" src="/server.js"></script>
-
-  <!-- Template Main Javascript File -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="js/main.js"></script>
-  <!-- <script src="/script.js"> </script> -->
-
 </body>
 </html>
