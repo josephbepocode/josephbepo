@@ -1,8 +1,23 @@
 const GH='https://github.com/josephbepocode/';
-const COL={web:'#4da3ff',games:'#ff7a45',fintech:'#2fd38a',ai:'#b07cff',tools:'#ffc23d'};
-const NAME={web:'Web',games:'Games',fintech:'Fintech',ai:'AI',tools:'Tools'};
+const COL={featured:'#ff4d8d',web:'#4da3ff',games:'#ff7a45',fintech:'#2fd38a',ai:'#b07cff',tools:'#ffc23d'};
+const NAME={featured:'Featured',web:'Web',games:'Games',fintech:'Fintech',ai:'AI',tools:'Tools'};
 // Every entry is described only from its README or source code.
 const P=[
+{t:'Agent Forge',c:['featured','ai','tools'],img:'agent-forge',feat:1,live:'https://josephbepocode.github.io/agent-app-builder/',repo:'agent-app-builder',
+ d:'A multi-agent app builder that runs entirely in your browser. A planner writes a spec, a coder writes a single-file HTML app and a reviewer fixes bugs, all on a local LLM (Qwen2.5 Coder) through WebLLM, with a live sandboxed preview. Needs a WebGPU browser such as desktop Chrome or Edge; others get sample output.',
+ s:['WebLLM','WebGPU','JavaScript','Sandboxed iframe']},
+{t:'Echo',c:['featured','ai'],img:'echo',live:'https://josephbepocode.github.io/voice-ai-assistant/',repo:'voice-ai-assistant',
+ d:'A private, on-device voice assistant. Whisper transcribes your voice, SmolLM2 replies and the browser reads the answer aloud. The models run in the browser (WebGPU with a WASM fallback), downloading about 300 MB on first run.',
+ s:['transformers.js','Whisper','SmolLM2','Web Speech API']},
+{t:'Warehouse Digital Twin',c:['featured','ai','games'],img:'warehouse-twin',live:'https://josephbepocode.github.io/warehouse-digital-twin/',repo:'warehouse-digital-twin',
+ d:'A 3D warehouse floor where autonomous robots take orders, plan routes with A*, pick from racks and deliver to packing stations without colliding. Live KPIs cover throughput, cycle time and utilisation. All data is simulated in the browser.',
+ s:['three.js','A* pathfinding','JavaScript']},
+{t:'Pixel2Page',c:['featured','ai','tools'],img:'pixel2page',live:'https://josephbepocode.github.io/screenshot-to-site/',repo:'screenshot-to-site',
+ d:'Turn a UI screenshot into a starter website. SmolVLM, a small vision model, reads the image in your browser while a layout analyser measures sections and colours, producing editable HTML and CSS. Images never leave your device; treat the output as a starting point.',
+ s:['transformers.js','SmolVLM','WebGPU / WASM','Canvas']},
+{t:'Signal Terminal',c:['featured','ai','fintech'],img:'signal-terminal',live:'https://josephbepocode.github.io/ai-markets-terminal/',repo:'ai-markets-terminal',
+ d:'A terminal-style crypto dashboard with live CoinGecko data, price charts and risk stats such as max drawdown, plus plain-language briefs from SmolLM2 running on your device. Educational demo only, not financial advice.',
+ s:['CoinGecko API','SmolLM2','transformers.js','Canvas']},
 {t:'Ontario Life',c:['games','web'],img:'ontario-life',feat:1,live:'https://josephbepocode.github.io/ontario-life/',repo:'ontario-life',
  d:"A Sims-style life sim across Ontario's 401 corridor, from Ottawa to Kitchener-Waterloo. Ride GO trains, VIA Rail or drive the 401, work shifts, make friends and pay rent on the 1st. Plays offline, with an optional Node server for accounts, cloud saves, DMs and leaderboards.",
  s:['HTML/CSS/JS','Node.js','localStorage','PWA']},
