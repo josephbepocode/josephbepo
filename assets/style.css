@@ -37,6 +37,7 @@ h2{font:500 clamp(2rem,4.5vw,3.4rem)/1.1 var(--serif);letter-spacing:-.02em;marg
 .photo{aspect-ratio:4/5;border-radius:var(--r);background:linear-gradient(145deg,var(--acc2),var(--acc));display:grid;place-items:center;position:relative;overflow:hidden}
 .photo span{font:700 6rem var(--serif);color:#fff;mix-blend-mode:overlay}.photo small{position:absolute;bottom:14px;color:#fff;opacity:.85;font-size:.66rem}
 .big{font:500 1.6rem/1.3 var(--serif);margin-bottom:14px}
+.about-grid.solo{grid-template-columns:1fr;max-width:760px}
 .about-grid p{color:var(--mut)}.about-grid .big{color:var(--fg)}
 .facts{list-style:none;padding:0;margin-top:26px;border-top:1px solid var(--line)}
 .facts li{display:flex;gap:16px;padding:12px 0;border-bottom:1px solid var(--line);flex-wrap:wrap}.facts span{width:70px;color:var(--mut);padding-top:3px}
