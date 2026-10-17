@@ -1,6 +1,6 @@
 // Liquid Chrome Monogram: one fixed three.js canvas behind the HTML.
 // The blob is an icosphere with simplex-noise displacement that can morph into a "J" tube.
-import * as THREE from 'three';
+let THREE; // three.js is imported on demand, after load + idle, so it never competes with first paint
 
 const root = document.documentElement;
 const canvas = document.getElementById('gl');
@@ -285,7 +285,7 @@ function init() {
 }
 
 // Boot (at the end so every const above is initialised)
-const boot = () => { try { init(); } catch (e) { console.warn('WebGL init failed', e); fallback('error'); } };
+const boot = async () => { try { await (window.__libs || Promise.resolve()); THREE = await import('three'); init(); } catch (e) { console.warn('WebGL init failed', e); fallback('error'); } };
 // Start WebGL only after the page has loaded and the main thread is idle, so the HTML hero paints first.
 const whenIdle = fn => { const go = () => ('requestIdleCallback' in window ? requestIdleCallback(fn, { timeout: 1200 }) : setTimeout(fn, 200));
   document.readyState === 'complete' ? go() : addEventListener('load', go, { once: true }); };

@@ -184,7 +184,13 @@ addEventListener('scroll',()=>{if(!ticking){ticking=true;requestAnimationFrame(o
 
 // Smooth scrolling (Lenis) wired to GSAP ScrollTrigger
 window.__reduce=reduce;
-if(!reduce&&window.Lenis&&!matchMedia('(max-width: 767px), (pointer: coarse)').matches){const lenis=new Lenis({lerp:.1,smoothWheel:true});window.__lenis=lenis;
+// GSAP, ScrollTrigger and Lenis are loaded after the page has painted and loaded (desktop only; touch uses native scroll).
+const loadScript=src=>new Promise((ok,no)=>{const s=document.createElement('script');s.src=src;s.onload=ok;s.onerror=no;document.head.appendChild(s)});
+const wantMotion=!reduce&&!matchMedia('(max-width: 767px), (pointer: coarse)').matches;
+window.__libs=wantMotion?new Promise(ok=>{const go=()=>Promise.all(['assets/vendor/gsap.min.js','assets/vendor/lenis.min.js'].map(loadScript))
+  .then(()=>loadScript('assets/vendor/ScrollTrigger.min.js')).then(()=>{initLenis();ok()},()=>ok());
+ document.readyState==='complete'?go():addEventListener('load',go,{once:true})}):Promise.resolve();
+function initLenis(){if(!window.Lenis)return;const lenis=new Lenis({lerp:.1,smoothWheel:true});window.__lenis=lenis;
  if(window.gsap&&window.ScrollTrigger){gsap.registerPlugin(ScrollTrigger);lenis.on('scroll',ScrollTrigger.update);gsap.ticker.add(t=>lenis.raf(t*1000));gsap.ticker.lagSmoothing(0)}
  else{const raf=t=>{lenis.raf(t);requestAnimationFrame(raf)};requestAnimationFrame(raf)}
  $$('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{const id=a.getAttribute('href');if(id.length<2)return;const t=$(id);if(!t)return;e.preventDefault();lenis.scrollTo(t,{offset:0,duration:1.4});history.replaceState(null,'',id)}))}
