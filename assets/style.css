@@ -27,13 +27,14 @@ em{font-family:var(--serif);font-style:italic;font-weight:400}
 .gl{position:fixed;inset:0;width:100vw;height:100vh;z-index:0;pointer-events:none;opacity:0;transition:opacity 1.2s ease .4s}
 .gl-on .gl{opacity:1}
 .gl-on.gl-hidden .gl{opacity:0;transition:opacity .6s ease}
-.gl-fallback{display:none;position:absolute;z-index:0;pointer-events:none;right:-6vw;top:12vh;height:min(72vh,640px);width:auto;opacity:.9}
+.gl-fallback img{height:100%;width:auto}
+.gl-fallback{display:none;position:absolute;aspect-ratio:508/873;z-index:0;pointer-events:none;right:-6vw;top:12vh;height:min(72vh,640px);width:auto;opacity:.9}
 .no-gl .gl-fallback{display:block}
 @media (max-width:767px){.gl-fallback{height:42vh;right:-14vw;top:16vh;opacity:.75}}
-.grain{position:fixed;inset:-50%;will-change:transform;z-index:60;pointer-events:none;opacity:.07;
+.grain{position:fixed;inset:0;z-index:60;pointer-events:none;opacity:.07;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1.4 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
-  animation:grain 1s steps(6) infinite}
-@keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-3%,2%)}40%{transform:translate(2%,-4%)}60%{transform:translate(-4%,-1%)}80%{transform:translate(3%,3%)}100%{transform:translate(0,0)}}
+  animation:grain 1s steps(5) infinite}
+@keyframes grain{0%{background-position:0 0}20%{background-position:-37px 21px}40%{background-position:53px -64px}60%{background-position:-71px -13px}80%{background-position:29px 47px}100%{background-position:0 0}}
 main,.foot,.top{position:relative;z-index:2}
 
 /* Loader */
