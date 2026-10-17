@@ -95,7 +95,7 @@ const CAT={'Agent Forge':'AI Agents · Dev Tools','Echo':'Voice AI · On-Device'
 const FEAT=['Agent Forge','Browser Code Agent','Warehouse Digital Twin','City Traffic Sim'];
 // Toolkit: only tech that appears in the projects above.
 const TOOLS_A=['three.js','WebGPU','WebLLM','transformers.js','Pyodide','MediaPipe','Tone.js','Magenta','Canvas','Web Audio'];
-const TOOLS_B=['React','Next.js','Node.js','Express','Python','Flask','Django','pandas','DuckDB','Solidity','Tailwind CSS','Git'];
+const TOOLS_B=['React','Next.js','Node.js','Express','Python','Flask','Django','D3.js','pandas','DuckDB','Solidity','Tailwind CSS','Git'];
 
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const esc=s=>String(s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
@@ -109,9 +109,11 @@ fill('#track-a',TOOLS_A);fill('#track-b',TOOLS_B);
 const fp=FEAT.map(t=>P.find(p=>p.t===t)).filter(Boolean);
 $('#featured').innerHTML=fp.map((p,i)=>{
  const href=p.live||(p.repo&&GH+p.repo)||'#';
- return `<article class="fcard reveal${i<3?' best':''}">
-  <a class="fimg" href="${href}" target="_blank" rel="noopener" aria-label="Open ${esc(p.t)}">
-   <img src="assets/projects/${p.img}.webp" alt="Screenshot of ${esc(p.t)}" loading="lazy" decoding="async" width="800" height="500">
+ const url=(p.live||GH+p.repo).replace(/^https?:\/\//,'').replace(/\/$/,'');
+ return `<article class="fcard reveal${i%2?' flip':''}">
+  <a class="frame" href="${href}" target="_blank" rel="noopener" aria-label="Open ${esc(p.t)}">
+   <span class="bar" aria-hidden="true"><i></i><i></i><i></i><span class="mono">${esc(url)}</span></span>
+   <span class="screen"><img src="assets/projects/${p.img}.webp" alt="Screenshot of ${esc(p.t)}" loading="lazy" decoding="async" width="800" height="500"></span>
    <span class="view mono">${p.live?'Live Project':'View Code'} ↗</span></a>
   <div class="fmeta">
    <span class="num mono">${String(i+1).padStart(2,'0')}</span>
@@ -121,6 +123,11 @@ $('#featured').innerHTML=fp.map((p,i)=>{
    <ul class="tags mono">${p.s.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>
    <div class="links mono">${p.live?`<a href="${p.live}" target="_blank" rel="noopener">Live ↗</a>`:''}${p.repo?`<a href="${GH+p.repo}" target="_blank" rel="noopener">Code ↗</a>`:''}</div>
   </div></article>`}).join('');
+// Hover tilt on the browser frames (desktop, fine pointer only)
+if(matchMedia('(hover: hover) and (pointer: fine)').matches&&!matchMedia('(prefers-reduced-motion: reduce)').matches)
+ $$('.frame').forEach(f=>{f.addEventListener('pointermove',e=>{const r=f.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
+  f.style.transform=`perspective(1200px) rotateY(${x*7}deg) rotateX(${-y*6}deg) translateZ(0)`});
+  f.addEventListener('pointerleave',()=>{f.style.transform=''})});
 
 // All projects list
 $('#all-n').textContent=P.length;
@@ -159,9 +166,10 @@ function countUp(){$$('.stats b').forEach(b=>{const to=+b.dataset.to,t0=performa
  const f=t=>{const k=Math.min(1,(t-t0)/1200);b.textContent=Math.round(to*(1-Math.pow(1-k,3)));if(k<1)requestAnimationFrame(f)};requestAnimationFrame(f)})}
 
 // Scroll-linked effects (progress bar, header state, about word highlight)
-let ticking=false;
+let ticking=false,lastY=0;
 function onScroll(){ticking=false;const y=scrollY,h=document.documentElement.scrollHeight-innerHeight;
  $('#bar').style.transform=`scaleX(${h>0?y/h:0})`;bar.classList.toggle('scrolled',y>40);
+ if(!bar.classList.contains('open')){if(y>lastY+4&&y>140)bar.classList.add('hide');else if(y<lastY-4||y<140)bar.classList.remove('hide')}lastY=y;
  const r=st.getBoundingClientRect(),k=Math.min(1,Math.max(0,(innerHeight*.85-r.top)/(r.height+innerHeight*.35)));
  const n=Math.round(words.length*k);words.forEach((w,i)=>w.classList.toggle('lit',reduce||i<n));
  // active service = the one closest to the viewport centre

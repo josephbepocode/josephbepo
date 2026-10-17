@@ -14,14 +14,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/style.css">
-<link rel="preload" href="assets/monogram.svg" as="image">
+
 <script>document.documentElement.classList.add('js');</script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <div class="loader" id="loader" aria-hidden="true"><span class="mono">Joseph Bepo / Portfolio</span><b id="load-n">0</b></div>
 <canvas class="gl" id="gl" aria-hidden="true"></canvas>
-<img class="gl-fallback" id="gl-fallback" src="assets/monogram.svg" alt="" aria-hidden="true" width="600" height="600">
+<img class="gl-fallback" id="gl-fallback" src="assets/monogram-still.png" alt="" aria-hidden="true" width="508" height="873" loading="lazy" decoding="async">
 <div class="grain" aria-hidden="true"></div>
 <div class="cursor" id="cursor" aria-hidden="true"></div>
 <div class="progress" aria-hidden="true"><span id="bar"></span></div>
@@ -53,19 +53,15 @@
     <span id="clock">EST</span>
   </div>
   <div class="hero-body">
-    <div class="hero-text">
-      <p class="kicker mono rise">AI &middot; Full-Stack &middot; In-Browser ML</p>
-      <h1 class="display"><span class="line"><span>Hi, I'm</span></span><span class="line"><span><em>Joseph</em></span></span></h1>
-      <p class="lead rise">I build AI apps, full-stack products and in-browser machine learning that runs privately on your own device.</p>
-      <div class="cta rise">
+    <p class="kicker mono rise">AI &middot; Full-Stack &middot; In-Browser ML</p>
+    <h1 class="display" aria-label="Hi, I'm Joseph"><span class="line" aria-hidden="true"><span>Hi, I'm</span></span><span class="line l2" aria-hidden="true"><span><em>Joseph</em></span></span></h1>
+    <div class="hero-foot rise">
+      <p class="lead">I build AI apps, full-stack products and in-browser machine learning that runs privately on your own device.</p>
+      <div class="cta">
         <a class="btn solid" href="#work">View the work <span aria-hidden="true">&rarr;</span></a>
         <a class="btn" href="assets/Joseph_Bepo_Resume.pdf" download>Download Resume <span aria-hidden="true">&darr;</span></a>
       </div>
     </div>
-    <figure class="portrait rise">
-      <img src="assets/joseph.jpg" alt="Portrait of Joseph Bepo" width="600" height="750">
-      <figcaption class="mono"><span>Joseph Bepo</span><span>Developer, est. 2024</span></figcaption>
-    </figure>
   </div>
   <a class="scroll-cue mono" href="#toolkit">Scroll <span aria-hidden="true">&darr;</span></a>
 </section>
@@ -78,7 +74,13 @@
 
 <section class="section about" id="about">
   <p class="label mono">(01) About Me</p>
+  <div class="about-grid">
+  <figure class="portrait reveal">
+    <img src="assets/joseph.jpg" alt="Portrait of Joseph Bepo" width="600" height="750" loading="lazy" decoding="async">
+    <figcaption class="mono"><span>Joseph Bepo</span><span>Oshawa, ON</span></figcaption>
+  </figure>
   <p class="statement" id="statement">I'm a Computer Programming graduate from Durham College who fell hard for the web. Today I ship AI that runs in the browser, from local LLM agents and voice assistants to computer vision, alongside 3D simulations, games and full-stack products that real people can use.</p>
+  </div>
   <div class="about-foot">
     <ul class="stats">
       <li><b id="st-all">0</b><span class="mono">Projects built</span></li>
@@ -97,8 +99,8 @@
   <ol class="svc" id="svc">
     <li class="reveal" tabindex="0"><span class="num mono">01</span><h3>In-Browser AI &amp; Agents</h3><div class="more"><div><p>Private, on-device AI with no server: local LLM agents that plan, write and repair their own code, plus speech and vision models running on WebGPU with WebAssembly fallbacks.</p><ul class="tags mono"><li>WebLLM</li><li>transformers.js</li><li>WebGPU</li><li>Pyodide</li><li>Web Workers</li></ul></div></div></li>
     <li class="reveal" tabindex="0"><span class="num mono">02</span><h3>Full-Stack Web Apps</h3><div class="more"><div><p>Production-minded web apps with secure accounts, payments and APIs, from the landing page to the admin area, on JavaScript or Python backends.</p><ul class="tags mono"><li>React</li><li>Next.js</li><li>Node.js</li><li>Express</li><li>Flask</li><li>Stripe</li></ul></div></div></li>
-    <li class="reveal" tabindex="0"><span class="num mono">03</span><h3>3D, Simulation &amp; Games</h3><div class="more"><div><p>Interactive 3D worlds and agent-based simulations with pathfinding, live KPIs and playable game loops that run smoothly in the browser.</p><ul class="tags mono"><li>three.js</li><li>D3.js</li><li>A* pathfinding</li><li>Agent-based models</li><li>PWA</li></ul></div></div></li>
-    <li class="reveal" tabindex="0"><span class="num mono">04</span><h3>Vision, Audio &amp; Data</h3><div class="more"><div><p>Real-time webcam effects with pose and face tracking, generative music tools, and Python data analysis that turns raw numbers into clear answers.</p><ul class="tags mono"><li>MediaPipe</li><li>Tone.js</li><li>Magenta</li><li>pandas</li><li>DuckDB</li></ul></div></div></li>
+    <li class="reveal" tabindex="0"><span class="num mono">03</span><h3>3D, Simulation &amp; Games</h3><div class="more"><div><p>Interactive 3D worlds and agent-based simulations with pathfinding, live KPIs and playable game loops that run smoothly in the browser.</p><ul class="tags mono"><li>three.js</li><li>A* pathfinding</li><li>Agent-based models</li><li>PWA</li></ul></div></div></li>
+    <li class="reveal" tabindex="0"><span class="num mono">04</span><h3>Vision, Audio &amp; Data</h3><div class="more"><div><p>Real-time webcam effects with pose and face tracking, generative music tools, and Python data analysis that turns raw numbers into clear answers.</p><ul class="tags mono"><li>MediaPipe</li><li>Tone.js</li><li>Magenta</li><li>D3.js</li><li>pandas</li><li>DuckDB</li></ul></div></div></li>
   </ol>
 </section>
 

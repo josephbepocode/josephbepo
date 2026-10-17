@@ -1,11 +1,11 @@
 // Liquid Chrome Monogram: one fixed three.js canvas behind the HTML.
 // The blob is an icosphere with simplex-noise displacement that can morph into a "J" tube.
 import * as THREE from 'three';
-import { RoomEnvironment } from './vendor/RoomEnvironment.js';
 
 const root = document.documentElement;
 const canvas = document.getElementById('gl');
-const mobile = matchMedia('(max-width: 760px), (pointer: coarse)').matches;
+const mobile = matchMedia('(max-width: 767px)').matches;
+const still = new URLSearchParams(location.search).has('still'); // used once to render the static fallback image
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const lowEnd = (navigator.deviceMemory && navigator.deviceMemory <= 2) ||
   (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2) ||
@@ -16,31 +16,31 @@ function hasWebGL() {
   try { const c = document.createElement('canvas'); return !!(c.getContext('webgl2') || c.getContext('webgl')); } catch (e) { return false; }
 }
 
-if (reduce) fallback('reduced-motion');
-else if (lowEnd) fallback('low-end');
-else if (!hasWebGL()) fallback('no-webgl');
-else { try { init(); } catch (e) { console.warn('WebGL init failed', e); fallback('error'); } }
-
 /* ---------- J monogram target: map sphere (lat, lon) onto a tube along a J curve ---------- */
 function jCurve() {
+  // Smooth J: short top bar, generous rounded shoulder, straight stem, round hook. Densely sampled.
   const pts = [];
   const line = (a, b, n) => { for (let i = 0; i < n; i++) { const k = i / n; pts.push([a[0] + (b[0] - a[0]) * k, a[1] + (b[1] - a[1]) * k]); } };
   const arc = (cx, cy, r, a0, a1, n) => { for (let i = 0; i < n; i++) { const a = a0 + (a1 - a0) * i / n; pts.push([cx + r * Math.cos(a), cy + r * Math.sin(a)]); } };
-  line([-0.42, 1.0], [0.12, 1.0], 30);
-  arc(0.12, 0.78, 0.22, Math.PI / 2, 0, 20);
-  line([0.34, 0.78], [0.34, -0.3], 50);
-  arc(-0.14, -0.3, 0.48, 0, -Math.PI, 60);
-  pts.push([-0.62, -0.3]);
-  // centre it
-  let mx = 0, my = 0; pts.forEach(p => { mx += p[0]; my += p[1]; }); mx /= pts.length; my /= pts.length;
-  const P = pts.map(p => [(p[0] - mx) * 1.15, (p[1] - my) * 1.15]);
+  line([-0.36, 1.0], [0.04, 1.0], 120);
+  arc(0.04, 0.7, 0.3, Math.PI / 2, 0, 160);
+  line([0.34, 0.7], [0.34, -0.3], 260);
+  arc(-0.14, -0.3, 0.48, 0, -Math.PI * 0.98, 420);
+  // light smoothing pass to remove tangent kinks at the joins
+  for (let pass = 0; pass < 6; pass++) for (let i = 1; i < pts.length - 1; i++) {
+    pts[i] = [(pts[i - 1][0] + 2 * pts[i][0] + pts[i + 1][0]) / 4, (pts[i - 1][1] + 2 * pts[i][1] + pts[i + 1][1]) / 4];
+  }
+  let x0 = 1e9, x1 = -1e9, y0 = 1e9, y1 = -1e9; pts.forEach(p => { x0 = Math.min(x0, p[0]); x1 = Math.max(x1, p[0]); y0 = Math.min(y0, p[1]); y1 = Math.max(y1, p[1]); });
+  const mx = (x0 + x1) / 2, my = (y0 + y1) / 2;
+  const P = pts.map(p => [(p[0] - mx) * 1.1, (p[1] - my) * 1.1]);
   const L = [0]; for (let i = 1; i < P.length; i++) L.push(L[i - 1] + Math.hypot(P[i][0] - P[i - 1][0], P[i][1] - P[i - 1][1]));
   const total = L[L.length - 1];
   return t => { // t in [0,1] -> {x,y,tx,ty}
-    const d = t * total; let i = 1; while (i < L.length - 1 && L[i] < d) i++;
-    const k = (d - L[i - 1]) / ((L[i] - L[i - 1]) || 1);
+    const d = t * total; let lo = 1, hi = L.length - 1; while (lo < hi) { const m = (lo + hi) >> 1; if (L[m] < d) lo = m + 1; else hi = m; }
+    const i = lo, k = (d - L[i - 1]) / ((L[i] - L[i - 1]) || 1);
     const x = P[i - 1][0] + (P[i][0] - P[i - 1][0]) * k, y = P[i - 1][1] + (P[i][1] - P[i - 1][1]) * k;
-    let tx = P[i][0] - P[i - 1][0], ty = P[i][1] - P[i - 1][1]; const l = Math.hypot(tx, ty) || 1;
+    const j0 = Math.max(0, i - 3), j1 = Math.min(P.length - 1, i + 2);
+    let tx = P[j1][0] - P[j0][0], ty = P[j1][1] - P[j0][1]; const l = Math.hypot(tx, ty) || 1;
     return { x, y, tx: tx / l, ty: ty / l };
   };
 }
@@ -49,7 +49,7 @@ function buildGeometry(detail) {
   const g = new THREE.IcosahedronGeometry(1, detail);
   const pos = g.attributes.position, n = pos.count;
   const tgt = new Float32Array(n * 3), tn = new Float32Array(n * 3);
-  const curve = jCurve(), R = 0.21;
+  const curve = jCurve(), R = 0.2;
   for (let i = 0; i < n; i++) {
     const x = pos.getX(i), y = pos.getY(i), z = pos.getZ(i);
     const yc = Math.max(-1, Math.min(1, y));
@@ -95,39 +95,57 @@ float snoise(vec3 v){
   vec4 m=max(0.6-vec4(dot(x0,x0),dot(x1,x1),dot(x2,x2),dot(x3,x3)),0.0); m=m*m;
   return 42.0*dot(m*m,vec4(dot(p0,x0),dot(p1,x1),dot(p2,x2),dot(p3,x3)));
 }
-uniform float uTime; uniform float uMorph; uniform float uAmp; uniform float uRipple;
+uniform float uTime; uniform float uMorph; uniform float uAmp; uniform float uFreq; uniform float uRipple;
 attribute vec3 aTarget; attribute vec3 aTargetN;
 vec3 dispP(vec3 p, vec3 n, float amp){
-  float d = snoise(p*1.35 + vec3(0.0, uTime*0.22, uTime*0.12))*amp
-          + snoise(p*3.1 - uTime*0.18)*amp*0.28;
-  d += uRipple*0.075*sin(length(p.xy)*13.0 - uTime*7.0);
+  // single low-frequency octave: liquid, not crumpled
+  float d = snoise(p*uFreq + vec3(0.0, uTime*0.16, uTime*0.09))*amp;
+  d += uRipple*0.035*sin(length(p.xy)*9.0 - uTime*6.0);
   return p + n*d;
 }`;
 
+/* ---------- Dark studio environment: black room + 3 soft-edged strip lights ---------- */
+function studioEnvironment(renderer) {
+  const sc = new THREE.Scene();
+  sc.add(new THREE.Mesh(new THREE.BoxGeometry(30, 30, 30), new THREE.MeshBasicMaterial({ color: 0x020202, side: THREE.BackSide })));
+  const strip = (w, h, pos, intensity) => {
+    const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({ color: new THREE.Color(intensity, intensity, intensity), side: THREE.DoubleSide }));
+    m.position.set(...pos); m.lookAt(0, 0, 0); sc.add(m);
+  };
+  strip(24, 24, [0, 0, 14], 0.1);     // faint wall behind the camera: lifts the blacks to graphite
+  strip(2.4, 18, [-6, 1, 6], 7);      // tall key strip, left-front
+  strip(1.4, 18, [3.5, 0, 9], 5);     // narrow front strip: bright band down the face
+  strip(1.2, 18, [8, 0, 0], 4);       // rim strip, right
+  strip(18, 1.6, [0, 9, 2], 3.5);     // overhead strip
+  strip(40, 40, [0, -9, 0], 0.35);    // soft grey floor: gives the chrome a horizon line
+  const pmrem = new THREE.PMREMGenerator(renderer);
+  const tex = pmrem.fromScene(sc, 0.02).texture; pmrem.dispose();
+  return tex;
+}
+
+const J_H = 2.42; // world height of the J at scale 1 (curve + tube)
+
 function init() {
   const dpr = Math.min(window.devicePixelRatio || 1, mobile ? 1 : 1.5);
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: !mobile, alpha: true, powerPreference: 'high-performance' });
-  renderer.setPixelRatio(dpr);
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance', preserveDrawingBuffer: still });
+  renderer.setPixelRatio(still ? 2 : dpr);
   renderer.setSize(innerWidth, innerHeight, false);
   renderer.setClearColor(0x000000, 0);
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.05;
+  renderer.toneMappingExposure = 1.0;
 
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(35, innerWidth / innerHeight, 0.1, 50);
-  camera.position.set(0, 0, 6);
-
-  const pmrem = new THREE.PMREMGenerator(renderer);
-  scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+  const camera = new THREE.PerspectiveCamera(30, innerWidth / innerHeight, 0.1, 60);
+  camera.position.set(0, 0, 8);
+  scene.environment = studioEnvironment(renderer);
 
   const lime = new THREE.Color('#C6FF3D'), white = new THREE.Color('#ffffff');
   const mat = new THREE.MeshPhysicalMaterial({
-    color: 0xffffff, metalness: 0.55, roughness: 0.1,
-    transmission: 0.35, thickness: 1.4, ior: 1.6,
-    iridescence: 1, iridescenceIOR: 1.35, iridescenceThicknessRange: [180, 820],
-    clearcoat: 1, clearcoatRoughness: 0.06, envMapIntensity: 1.25,
+    color: 0xffffff, metalness: 1, roughness: 0.09,
+    iridescence: 0.22, iridescenceIOR: 1.3, iridescenceThicknessRange: [120, 380], // faint edge sheen only
+    clearcoat: 0.4, clearcoatRoughness: 0.05, envMapIntensity: 1.15,
   });
-  const U = { uTime: { value: 0 }, uMorph: { value: 0 }, uAmp: { value: 0.22 }, uRipple: { value: 0 } };
+  const U = { uTime: { value: 0 }, uMorph: { value: 0 }, uAmp: { value: 0.09 }, uFreq: { value: 0.9 }, uRipple: { value: 0 } };
   mat.onBeforeCompile = sh => {
     Object.assign(sh.uniforms, U);
     sh.vertexShader = sh.vertexShader
@@ -135,84 +153,135 @@ function init() {
       .replace('#include <beginnormal_vertex>', `
         vec3 bP = mix(position, aTarget, uMorph);
         vec3 bN = normalize(mix(normal, aTargetN, uMorph));
-        float amp = uAmp * (1.0 - 0.8 * uMorph);
+        float amp = uAmp * (1.0 - 0.85 * uMorph);
         vec3 dP = dispP(bP, bN, amp);
         vec3 tA = normalize(cross(bN, abs(bN.y) < 0.99 ? vec3(0.0,1.0,0.0) : vec3(1.0,0.0,0.0)));
         vec3 tB = normalize(cross(bN, tA));
-        vec3 q1 = dispP(bP + tA*0.012, bN, amp);
-        vec3 q2 = dispP(bP + tB*0.012, bN, amp);
+        vec3 q1 = dispP(bP + tA*0.01, bN, amp);
+        vec3 q2 = dispP(bP + tB*0.01, bN, amp);
         vec3 objectNormal = normalize(cross(q1 - dP, q2 - dP));
         if (dot(objectNormal, bN) < 0.0) objectNormal = -objectNormal;
       `)
       .replace('#include <begin_vertex>', 'vec3 transformed = dP;');
   };
-
   const mesh = new THREE.Mesh(buildGeometry(mobile ? 24 : 64), mat);
   scene.add(mesh);
-  const key = new THREE.DirectionalLight(0xffffff, 1.6); key.position.set(3, 4, 5); scene.add(key);
-  const rim = new THREE.PointLight(0xc6ff3d, 18, 12); rim.position.set(-3, -1.5, 2.5); scene.add(rim);
 
-  // Scroll choreography state (x, y as fractions of the viewport from centre)
-  const S = { x: mobile ? 0.3 : 0, y: mobile ? 0.2 : 0.02, s: mobile ? 0.5 : 1, morph: 1, tint: 0 };
-  const states = [
-    ['#home',     { x: mobile ? 0.3 : 0,  y: mobile ? 0.2 : 0.02, s: mobile ? 0.5 : 1, morph: 1, tint: 0 }],
-    ['#toolkit',  { x: mobile ? 0.22 : 0.3, y: -0.05, s: mobile ? 0.34 : 0.42, morph: 0, tint: 0 }],
-    ['#about',    { x: mobile ? 0.48 : -0.34, y: 0.18, s: mobile ? 0.3 : 0.5,  morph: 0, tint: 0.2 }],
-    ['#services', { x: mobile ? 0.5 : 0.31, y: 0,    s: mobile ? 0.26 : 0.52, morph: 0, tint: 1 }],
-    ['#work',     { x: mobile ? 0.52 : 0.4,  y: -0.32, s: mobile ? 0.22 : 0.34, morph: 0.15, tint: 0 }],
-    ['#contact',  { x: mobile ? 0 : 0.27,   y: mobile ? -0.18 : 0.02, s: mobile ? 0.6 : 0.95, morph: 1, tint: 0.35 }],
-  ];
-  const gsap = window.gsap, ST = window.ScrollTrigger;
-  if (gsap && ST) {
-    gsap.registerPlugin(ST);
-    for (let i = 1; i < states.length; i++) {
-      const [sel, to] = states[i], from = states[i - 1][1];
-      if (!document.querySelector(sel)) continue;
-      gsap.fromTo(S, { ...from }, { ...to, ease: 'none', immediateRender: false,
-        scrollTrigger: { trigger: sel, start: 'top bottom', end: i === states.length - 1 ? 'center center' : 'top 25%', scrub: 1 } });
-    }
+  const visH = () => 2 * camera.position.z * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
+
+  if (still) { // static render of the chrome J for the reduced-motion / no-WebGL fallback
+    U.uMorph.value = 1; U.uAmp.value = 0; mesh.scale.setScalar(0.86 * visH() / J_H);
+    mesh.rotation.set(0.05, -0.32, 0.02);
+    renderer.render(scene, camera); window.__stillReady = true; return;
   }
 
-  // Intro: blob forms into the monogram once the loader finishes
-  const intro = { v: 0 };
-  if (gsap) gsap.to(intro, { v: 1, duration: 2.2, delay: 1.0, ease: 'power3.inOut' }); else intro.v = 1;
+  // Hero placement: J height = 120% of the headline, centre near the right edge so ~20% is cropped off.
+  const H = { x: 0.3, y: 0, s: 0.6 };
+  function measureHero() {
+    const h1 = document.querySelector('.hero h1'); if (!h1) return;
+    const r = h1.getBoundingClientRect(), top = r.top + scrollY;
+    const hpx = r.height * 1.2, wpx = hpx * 0.56;
+    H.s = hpx / innerHeight;
+    H.x = (innerWidth - wpx * 0.6) / innerWidth - 0.5;
+    H.y = 0.5 - (top + r.height / 2) / innerHeight;
+  }
+  measureHero();
 
-  // Pointer tilt
+  // State: x,y = fractions of the viewport from centre; s = object height as a fraction of viewport height
+  const S = { x: H.x, y: H.y, s: H.s, morph: 1, tint: 0, amp: 0.09, freq: 0.9, rx: 0, ry: -0.25 };
+  const states = [
+    ['#home',     { x: () => H.x, y: () => H.y, s: () => H.s, morph: 1, tint: 0, amp: 0.09, freq: 0.9, ry: -0.25 }],
+    ['#toolkit',  { x: 0.3,   y: -0.04, s: 0.3,  morph: 0, tint: 0,   amp: 0.09, freq: 0.9, ry: 0 }],
+    ['#about',    { x: 0.36,  y: 0.12,  s: 0.3,  morph: 0, tint: 0,   amp: 0.08, freq: 0.8, ry: 0.3 }],
+    ['#services', { x: 0.32,  y: 0,     s: 0.36, morph: 0, tint: 1,   amp: 0.07, freq: 0.55, ry: 0 }], // smooth droplet
+    ['#work',     { x: 0.44,  y: -0.34, s: 0.2,  morph: 0, tint: 0,   amp: 0.08, freq: 0.8, ry: 0 }],
+    ['#contact',  { x: 0.27,  y: 0.02,  s: 0.62, morph: 1, tint: 0.2, amp: 0.09, freq: 0.9, ry: -0.3 }],
+  ];
+  const gsap = window.gsap, ST = window.ScrollTrigger;
+  // One scrubbed GSAP timeline over the whole page (timeline units = scroll pixels), rebuilt when layout changes.
+  let tl = null;
+  const val = v => (typeof v === 'function' ? v() : v);
+  const snap = st => Object.fromEntries(Object.entries(st).map(([k, v]) => [k, val(v)]));
+  function build() {
+    if (!gsap || !ST || mobile) return;
+    measureHero();
+    const prog = tl ? tl.scrollTrigger.progress : 0;
+    if (tl) { tl.scrollTrigger.kill(); tl.kill(); }
+    const max = Math.max(1, document.documentElement.scrollHeight - innerHeight);
+    Object.assign(S, snap(states[0][1]));
+    tl = gsap.timeline({ paused: true, defaults: { ease: 'none' } });
+    let cursor = 0;
+    for (let i = 1; i < states.length; i++) {
+      const el = document.querySelector(states[i][0]); if (!el) continue;
+      const top = el.getBoundingClientRect().top + scrollY;
+      let st = Math.max(cursor, top - innerHeight), en = i === states.length - 1 ? top + el.offsetHeight / 2 - innerHeight / 2 : top - innerHeight * 0.25;
+      st = Math.min(st, max); en = Math.min(Math.max(en, st + 1), max);
+      tl.fromTo(S, snap(states[i - 1][1]), { ...snap(states[i][1]), duration: en - st, immediateRender: false }, st);
+      cursor = en;
+    }
+    tl.set({}, {}, max);
+    tl.scrollTrigger = ST.create({ start: 0, end: max, scrub: 1, animation: tl });
+    tl.progress(prog);
+  }
+  const ready = () => { measureHero(); build(); };
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(ready); else ready();
+  addEventListener('load', ready);
+  setTimeout(ready, 1600);
+  let rz; addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(ready, 200); });
+  if (!gsap || !ST || mobile) Object.assign(S, snap(states[0][1]));
+
+  addEventListener('resize', () => { if (mobile) { measureHero(); Object.assign(S, snap(states[0][1])); } });
+
+  // Intro: liquid blob forms into the monogram after the load counter
+  const intro = { v: 0 };
+  if (gsap) gsap.to(intro, { v: 1, duration: 2.2, delay: 0.9, ease: 'power3.inOut' }); else intro.v = 1;
+
   const ptr = { x: 0, y: 0 }, tilt = { x: 0, y: 0 };
   addEventListener('pointermove', e => { ptr.x = e.clientX / innerWidth * 2 - 1; ptr.y = e.clientY / innerHeight * 2 - 1; }, { passive: true });
 
-  // Hovering a project card ripples the blob (desktop)
   if (!mobile && gsap) document.querySelectorAll('.fcard').forEach(c => {
-    c.addEventListener('mouseenter', () => { gsap.to(U.uRipple, { value: 1, duration: 0.6, ease: 'power2.out' }); gsap.to(U.uAmp, { value: 0.34, duration: 0.6 }); });
-    c.addEventListener('mouseleave', () => { gsap.to(U.uRipple, { value: 0, duration: 1.2, ease: 'power2.out' }); gsap.to(U.uAmp, { value: 0.22, duration: 1.2 }); });
+    c.addEventListener('mouseenter', () => gsap.to(U.uRipple, { value: 1, duration: 0.6, ease: 'power2.out' }));
+    c.addEventListener('mouseleave', () => gsap.to(U.uRipple, { value: 0, duration: 1.2, ease: 'power2.out' }));
   });
 
   const tmpC = new THREE.Color();
-  let fy = 0, running = false, onScreen = true, last = performance.now(), t = 0;
+  let fy = 0, running = false, visible = true, last = performance.now(), t = 0;
   function frame(now) {
     if (!running) return;
     requestAnimationFrame(frame);
     const dt = Math.min(0.05, (now - last) / 1000); last = now; t += dt;
-    U.uTime.value = t;
+    U.uTime.value = t; U.uAmp.value = S.amp; U.uFreq.value = S.freq;
     U.uMorph.value = Math.min(S.morph, intro.v);
-    // in services, follow the active item vertically
     const a = window.__active; let ty = 0;
     if (a) { const r = a.getBoundingClientRect(); ty = 0.5 - (r.top + r.height / 2) / innerHeight; }
     fy += (ty - fy) * 0.08;
-    const visH = 2 * camera.position.z * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)), visW = visH * camera.aspect;
-    mesh.position.set(S.x * visW, (S.y + fy * S.tint) * visH, 0);
-    mesh.scale.setScalar(S.s * Math.min(1, visW / 3.2 + 0.35));
-    tilt.x += (ptr.y * 0.35 - tilt.x) * 0.06; tilt.y += (ptr.x * 0.5 - tilt.y) * 0.06;
-    mesh.rotation.set(tilt.x, tilt.y + Math.sin(t * 0.35) * 0.25 * (1 - U.uMorph.value * 0.6), Math.sin(t * 0.2) * 0.05);
-    tmpC.copy(white).lerp(lime, S.tint * 0.55); mat.color.copy(tmpC);
-    mat.iridescenceThicknessRange[1] = 820 - S.tint * 300;
+    const vh = visH(), vw = vh * camera.aspect;
+    mesh.position.set(S.x * vw, (S.y + fy * S.tint) * vh, 0);
+    mesh.scale.setScalar(S.s * vh / J_H);
+    mesh.scale.y *= 1 + 0.16 * S.tint; // droplet stretch in services
+    tilt.x += (ptr.y * 0.22 - tilt.x) * 0.05; tilt.y += (ptr.x * 0.35 - tilt.y) * 0.05;
+    mesh.rotation.set(tilt.x, S.ry + tilt.y + Math.sin(t * 0.3) * 0.12, 0);
+    tmpC.copy(white).lerp(lime, S.tint * 0.14); mat.color.copy(tmpC);
     renderer.render(scene, camera);
   }
-  const start = () => { if (!running && !document.hidden && onScreen) { running = true; last = performance.now(); requestAnimationFrame(frame); } };
+  const start = () => { if (!running && !document.hidden && visible) { running = true; last = performance.now(); requestAnimationFrame(frame); } };
   const stop = () => { running = false; };
   document.addEventListener('visibilitychange', () => document.hidden ? stop() : start());
-  new IntersectionObserver(es => { onScreen = es[0].isIntersecting; onScreen ? start() : stop(); }).observe(canvas);
+  // Desktop: pause when the canvas is off-screen. Mobile: the blob lives in the hero only.
+  const watch = mobile ? document.getElementById('home') : canvas;
+  new IntersectionObserver(es => {
+    visible = es[0].isIntersecting;
+    if (mobile) root.classList.toggle('gl-hidden', !visible);
+    visible ? start() : (mobile ? setTimeout(() => { if (!visible) stop(); }, 650) : stop());
+  }, { threshold: 0 }).observe(watch);
   addEventListener('resize', () => { renderer.setSize(innerWidth, innerHeight, false); camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix(); });
   root.classList.add('gl-on');
   start();
 }
+
+// Boot (at the end so every const above is initialised)
+if (still) { try { init(); } catch (e) { console.warn(e); } }
+else if (reduce) fallback('reduced-motion');
+else if (lowEnd) fallback('low-end');
+else if (!hasWebGL()) fallback('no-webgl');
+else { try { init(); } catch (e) { console.warn('WebGL init failed', e); fallback('error'); } }
