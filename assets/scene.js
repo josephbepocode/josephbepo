@@ -12,8 +12,17 @@ const lowEnd = (navigator.deviceMemory && navigator.deviceMemory <= 2) ||
   (navigator.connection && navigator.connection.saveData);
 const fallback = why => { root.classList.add('no-gl'); root.dataset.gl = why; canvas.remove(); };
 
-function hasWebGL() {
-  try { const c = document.createElement('canvas'); return !!(c.getContext('webgl2') || c.getContext('webgl')); } catch (e) { return false; }
+const forceGL = new URLSearchParams(location.search).has('forcegl'); // screenshots/video on GPU-less machines
+// 'ok', 'none', or 'software' (no GPU: SwiftShader / llvmpipe would make every frame a long main-thread task)
+function glSupport() {
+  try {
+    const c = document.createElement('canvas'), gl = c.getContext('webgl2') || c.getContext('webgl');
+    if (!gl) return 'none';
+    const ext = gl.getExtension('WEBGL_debug_renderer_info');
+    const r = ext ? String(gl.getParameter(ext.UNMASKED_RENDERER_WEBGL)) : '';
+    gl.getExtension('WEBGL_lose_context')?.loseContext();
+    return /swiftshader|llvmpipe|software|basic render/i.test(r) ? 'software' : 'ok';
+  } catch (e) { return 'none'; }
 }
 
 /* ---------- J monogram target: map sphere (lat, lon) onto a tube along a J curve ---------- */
@@ -280,8 +289,14 @@ function init() {
 }
 
 // Boot (at the end so every const above is initialised)
-if (still) { try { init(); } catch (e) { console.warn(e); } }
+const boot = () => { try { init(); } catch (e) { console.warn('WebGL init failed', e); fallback('error'); } };
+// Start WebGL only after the page has loaded and the main thread is idle, so the HTML hero paints first.
+const whenIdle = fn => { const go = () => ('requestIdleCallback' in window ? requestIdleCallback(fn, { timeout: 1200 }) : setTimeout(fn, 200));
+  document.readyState === 'complete' ? go() : addEventListener('load', go, { once: true }); };
+if (still) boot();
 else if (reduce) fallback('reduced-motion');
 else if (lowEnd) fallback('low-end');
-else if (!hasWebGL()) fallback('no-webgl');
-else { try { init(); } catch (e) { console.warn('WebGL init failed', e); fallback('error'); } }
+else { const g = glSupport();
+  if (g === 'none') fallback('no-webgl');
+  else if (g === 'software' && !forceGL) fallback('software-gl');
+  else whenIdle(boot); }

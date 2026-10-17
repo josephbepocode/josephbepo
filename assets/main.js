@@ -111,7 +111,7 @@ $('#featured').innerHTML=fp.map((p,i)=>{
  const href=p.live||(p.repo&&GH+p.repo)||'#';
  const url=(p.live||GH+p.repo).replace(/^https?:\/\//,'').replace(/\/$/,'');
  return `<article class="fcard reveal${i%2?' flip':''}">
-  <a class="frame" href="${href}" target="_blank" rel="noopener" aria-label="Open ${esc(p.t)}">
+  <a class="frame" href="${href}" target="_blank" rel="noopener">
    <span class="bar" aria-hidden="true"><i></i><i></i><i></i><span class="mono">${esc(url)}</span></span>
    <span class="screen"><img src="assets/projects/${p.img}.webp" alt="Screenshot of ${esc(p.t)}" loading="lazy" decoding="async" width="800" height="500"></span>
    <span class="view mono">${p.live?'Live Project':'View Code'} ↗</span></a>
@@ -181,7 +181,7 @@ addEventListener('scroll',()=>{if(!ticking){ticking=true;requestAnimationFrame(o
 
 // Smooth scrolling (Lenis) wired to GSAP ScrollTrigger
 window.__reduce=reduce;
-if(!reduce&&window.Lenis){const lenis=new Lenis({lerp:.1,smoothWheel:true});window.__lenis=lenis;
+if(!reduce&&window.Lenis&&!matchMedia('(max-width: 767px), (pointer: coarse)').matches){const lenis=new Lenis({lerp:.1,smoothWheel:true});window.__lenis=lenis;
  if(window.gsap&&window.ScrollTrigger){gsap.registerPlugin(ScrollTrigger);lenis.on('scroll',ScrollTrigger.update);gsap.ticker.add(t=>lenis.raf(t*1000));gsap.ticker.lagSmoothing(0)}
  else{const raf=t=>{lenis.raf(t);requestAnimationFrame(raf)};requestAnimationFrame(raf)}
  $$('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{const id=a.getAttribute('href');if(id.length<2)return;const t=$(id);if(!t)return;e.preventDefault();lenis.scrollTo(t,{offset:0,duration:1.4});history.replaceState(null,'',id)}))}
