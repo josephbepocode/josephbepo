@@ -201,7 +201,7 @@ function init() {
   const states = [
     ['#home',     { x: () => H.x, y: () => H.y, s: () => H.s, morph: 1, tint: 0, amp: 0.09, freq: 0.9, ry: -0.25 }],
     ['#toolkit',  { x: 0.3,   y: -0.04, s: 0.3,  morph: 0, tint: 0,   amp: 0.09, freq: 0.9, ry: 0 }],
-    ['#about',    { x: 0.36,  y: 0.12,  s: 0.3,  morph: 0, tint: 0,   amp: 0.08, freq: 0.8, ry: 0.3 }],
+    ['#about',    { x: 0.46,  y: 0.36,  s: 0.2,  morph: 0, tint: 0,   amp: 0.08, freq: 0.8, ry: 0.3 }],
     ['#services', { x: 0.32,  y: 0,     s: 0.36, morph: 0, tint: 1,   amp: 0.07, freq: 0.55, ry: 0 }], // smooth droplet
     ['#work',     { x: 0.44,  y: -0.34, s: 0.2,  morph: 0, tint: 0,   amp: 0.08, freq: 0.8, ry: 0 }],
     ['#contact',  { x: 0.27,  y: 0.02,  s: 0.62, morph: 1, tint: 0.2, amp: 0.09, freq: 0.9, ry: -0.3 }],
