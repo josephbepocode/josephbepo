@@ -87,8 +87,11 @@ const P=[
  d:'A growing library of small Python programs, including a sales calculator and a playful snake that paints random ASCII art.',
  s:['Python']},
 ];
-// Year = repo creation year on GitHub (blank when there is no repo to check).
-const YEAR={'Agent Forge':2026,'Echo':2026,'Warehouse Digital Twin':2026,'Pixel2Page':2026,'Signal Terminal':2026,'AI Vision Studio':2026,'AI Music Lab':2026,'City Traffic Sim':2026,'Browser Code Agent':2026,'Deji Design Studio':2026,'Ontario Life':2026,'Ontario Gas Prices':2026,'Gym Progress Tracker':2026,'Deji Drop 01':2026,'Braids By Tete':2025,'AI Bookkeeper':2026,'Resume Builder':2025,'ScanWithBepo':2024,'EduChain':2024,'TimelessNFT':2024,'Storex':2025,'SvelteKit Starter':2025,'Little Lemon':2024,'Hot Dog Profit Calculator':2024,'Python Apps':2024};
+// Year = GitHub creation year of each project's repo (checked with `gh repo list`, Oct 2026).
+// Private repos are mapped by title; projects with no repo (JJ Fit, Polymarket sandbox) show no year.
+const REPO_YEAR={"AIBookkeeper":2026,"BinanceBot":2025,"EduChain":2024,"agent-app-builder":2026,"ai-markets-terminal":2026,"ai-music-lab":2026,"ai-vision-studio":2026,"ajeesha":2026,"booktete":2025,"booktrace":2024,"browser-code-agent":2026,"city-traffic-sim":2026,"deji-design-studio":2026,"djangoproj":2024,"feb23":2025,"football-lab":2026,"gas-price-finder":2026,"gymwatch":2026,"josephbepo":2024,"ontario-life":2026,"pb":2026,"python-apps":2024,"resumer-builder":2025,"scanwithbepo":2024,"screenshot-to-site":2026,"snakeweb":2024,"social3":2024,"sol-marketplace":2024,"store":2025,"storex":2025,"sveltekit-boilerplate":2025,"voice-ai-assistant":2026,"warehouse-digital-twin":2026};
+const PRIVATE_REPO={'Resume Builder':'resumer-builder','ScanWithBepo':'scanwithbepo','EduChain':'EduChain','TimelessNFT':'sol-marketplace','Storex':'storex','SvelteKit Starter':'sveltekit-boilerplate'};
+const yearOf=p=>REPO_YEAR[p.repo||PRIVATE_REPO[p.t]]||'';
 // Editorial category line for each project.
 const CAT={'Agent Forge':'AI Agents · Dev Tools','Echo':'Voice AI · On-Device','Warehouse Digital Twin':'3D Simulation · Robotics','Pixel2Page':'Vision AI · Web','Signal Terminal':'Fintech · AI','AI Vision Studio':'Computer Vision','AI Music Lab':'Generative Audio','City Traffic Sim':'3D Simulation · Urban','Browser Code Agent':'AI Agents · Python','Deji Design Studio':'Generative Design · Fashion','Ontario Life':'Game · Life Sim'};
 // Top three = the most technically demanding builds; then three more strong ones.
@@ -99,7 +102,7 @@ const TOOLS_B=['React','Next.js','Node.js','Express','Python','Flask','Django','
 
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const esc=s=>String(s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
-P.forEach(p=>{p.y=YEAR[p.t]||'';p.cat=CAT[p.t]||p.c.filter(c=>c!=='featured').map(c=>NAME[c]).join(' · ')});
+P.forEach(p=>{p.y=yearOf(p);p.cat=CAT[p.t]||p.c.filter(c=>c!=='featured').map(c=>NAME[c]).join(' · ')});
 
 // Marquee: duplicate the list so the CSS loop is seamless.
 const fill=(id,arr)=>{const h=arr.map(t=>`<li>${esc(t)}</li><li class="star" aria-hidden="true">✳</li>`).join('');$(id).innerHTML=h+h.replace(/<li>/g,'<li aria-hidden="true">')};
@@ -117,7 +120,7 @@ $('#featured').innerHTML=fp.map((p,i)=>{
    <span class="view mono">${p.live?'Live Project':'View Code'} ↗</span></a>
   <div class="fmeta">
    <span class="num mono">${String(i+1).padStart(2,'0')}</span>
-   <p class="cat mono">${esc(p.cat)} · ${p.y}</p>
+   <p class="cat mono">${esc(p.cat)}${p.y?' · '+p.y:''}</p>
    <h3>${esc(p.t)}</h3>
    <p class="desc">${esc(p.d)}</p>
    <ul class="tags mono">${p.s.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>
@@ -202,11 +205,14 @@ if(matchMedia('(hover: hover) and (pointer: fine)').matches&&!reduce){document.b
  requestAnimationFrame(f);setTimeout(finish,D+500)})();
 
 // Shop tab: prefer the Deji store, fall back to the Deji Drop site (pb on GitHub Pages) when the store is unreachable.
-// Links default to the working fallback; a no-cors probe with a short timeout upgrades them if the store answers.
-(()=>{const SHOP='https://shop.bepojoseph.xyz/',links=$$('[data-shop]');if(!links.length||!window.fetch)return;
- const ctl='AbortController' in window?new AbortController():null,timer=setTimeout(()=>ctl&&ctl.abort(),3000);
- fetch(SHOP,{mode:'no-cors',cache:'no-store',signal:ctl&&ctl.signal}).then(()=>{links.forEach(a=>{a.href=SHOP;a.dataset.shopState='store'})})
-  .catch(()=>{links.forEach(a=>a.dataset.shopState='fallback')}).finally(()=>clearTimeout(timer))})();
+// Links default to the working fallback. A no-cors probe with a 3s timeout runs on first sign of intent
+// (hovering/focusing a Shop link or opening the menu) and upgrades every Shop link if the store answers.
+(()=>{const SHOP='https://shop.bepojoseph.xyz/',links=$$('[data-shop]');if(!links.length||!window.fetch)return;let probed=false;
+ const probe=()=>{if(probed)return;probed=true;const ctl='AbortController' in window?new AbortController():null,timer=setTimeout(()=>ctl&&ctl.abort(),3000);
+  fetch(SHOP,{mode:'no-cors',cache:'no-store',signal:ctl&&ctl.signal}).then(()=>links.forEach(a=>{a.href=SHOP;a.dataset.shopState='store'}))
+   .catch(()=>links.forEach(a=>a.dataset.shopState='fallback')).finally(()=>clearTimeout(timer))};
+ links.forEach(a=>['pointerenter','focus','touchstart'].forEach(ev=>a.addEventListener(ev,probe,{once:true,passive:true})));
+ $('#menu-btn').addEventListener('click',probe,{once:true})})();
 
 // Clock + year
 const clk=$('#clock');const tick=()=>{clk.textContent=new Date().toLocaleTimeString('en-CA',{timeZone:'America/Toronto',hour:'2-digit',minute:'2-digit'})+' Toronto'};tick();setInterval(tick,30000);

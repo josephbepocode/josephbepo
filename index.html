@@ -16,13 +16,18 @@
 <link rel="preload" href="assets/fonts/InterTight.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/style.css">
 
-<script>document.documentElement.classList.add('js');</script>
+<link rel="preload" as="image" href="assets/monogram-still.avif" type="image/avif" fetchpriority="high">
+<script>(function(d){d.classList.add('js');try{var q=location.search,f=/forcegl|still/.test(q),m=function(x){return matchMedia(x).matches},n=navigator,
+ low=(n.deviceMemory&&n.deviceMemory<=2)||(n.hardwareConcurrency&&n.hardwareConcurrency<=2)||(n.connection&&n.connection.saveData),r='';
+ if(m('(prefers-reduced-motion: reduce)'))r='reduced-motion';else if(low)r='low-end';else{var c=document.createElement('canvas'),g=c.getContext('webgl2')||c.getContext('webgl');
+  if(!g)r='no-webgl';else{var e=g.getExtension('WEBGL_debug_renderer_info'),s=e?String(g.getParameter(e.UNMASKED_RENDERER_WEBGL)):'';if(!f&&/swiftshader|llvmpipe|software|basic render/i.test(s))r='software-gl';
+  var l=g.getExtension('WEBGL_lose_context');l&&l.loseContext()}}
+ if(r){d.classList.add('no-gl');d.dataset.gl=r}}catch(_){d.classList.add('no-gl')}})(document.documentElement);</script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <div class="loader" id="loader" aria-hidden="true"><span class="mono">Joseph Bepo / Portfolio</span><b id="load-n">0</b></div>
 <canvas class="gl" id="gl" aria-hidden="true"></canvas>
-<picture class="gl-fallback" aria-hidden="true"><source srcset="assets/monogram-still.avif" type="image/avif"><img id="gl-fallback" src="assets/monogram-still.png" alt="" width="508" height="873" decoding="async"></picture>
 <div class="grain" aria-hidden="true"></div>
 <div class="cursor" id="cursor" aria-hidden="true"></div>
 <div class="progress" aria-hidden="true"><span id="bar"></span></div>
@@ -57,7 +62,10 @@
   </div>
   <div class="hero-body">
     <p class="kicker mono rise">AI &middot; Full-Stack &middot; In-Browser ML</p>
-    <h1 class="display" aria-label="Hi, I'm Joseph"><span class="line" aria-hidden="true"><span>Hi, I'm</span></span><span class="line l2" aria-hidden="true"><span><em>Joseph</em></span></span></h1>
+    <div class="headline">
+      <picture class="hero-still" aria-hidden="true"><source srcset="assets/monogram-still.avif" type="image/avif"><img src="assets/monogram-still.png" alt="" width="508" height="873" fetchpriority="high" decoding="async"></picture>
+      <h1 class="display" aria-label="Hi, I'm Joseph"><span class="line" aria-hidden="true"><span>Hi, I'm</span></span><span class="line l2" aria-hidden="true"><span><em>Joseph</em></span></span></h1>
+    </div>
     <div class="hero-foot rise">
       <p class="lead">I build AI apps, full-stack products and in-browser machine learning that runs privately on your own device.</p>
       <div class="cta">

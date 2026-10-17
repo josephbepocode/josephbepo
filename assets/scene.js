@@ -200,10 +200,10 @@ function init() {
   const S = { x: H.x, y: H.y, s: H.s, morph: 1, tint: 0, amp: 0.09, freq: 0.9, rx: 0, ry: -0.25 };
   const states = [
     ['#home',     { x: () => H.x, y: () => H.y, s: () => H.s, morph: 1, tint: 0, amp: 0.09, freq: 0.9, ry: -0.25 }],
-    ['#toolkit',  { x: 0.3,   y: -0.04, s: 0.3,  morph: 0, tint: 0,   amp: 0.09, freq: 0.9, ry: 0 }],
-    ['#about',    { x: 0.46,  y: 0.36,  s: 0.2,  morph: 0, tint: 0,   amp: 0.08, freq: 0.8, ry: 0.3 }],
-    ['#services', { x: 0.32,  y: 0,     s: 0.36, morph: 0, tint: 1,   amp: 0.07, freq: 0.55, ry: 0 }], // smooth droplet
-    ['#work',     { x: 0.44,  y: -0.34, s: 0.2,  morph: 0, tint: 0,   amp: 0.08, freq: 0.8, ry: 0 }],
+    ['#toolkit',  { x: 0.34,  y: -0.04, s: 0.3,  morph: 0.88, tint: 0,   amp: 0.09, freq: 0.9, ry: 0 }],
+    ['#about',    { x: 0.45,  y: 0.34,  s: 0.22, morph: 0.88, tint: 0,   amp: 0.08, freq: 0.8, ry: 0.3 }],
+    ['#services', { x: 0.33,  y: 0,     s: 0.4,  morph: 0.88, tint: 1,   amp: 0.07, freq: 0.55, ry: 0 }], // softened J, lime-tinted chrome
+    ['#work',     { x: 0.45,  y: -0.32, s: 0.2,  morph: 0.88, tint: 0,   amp: 0.08, freq: 0.8, ry: 0 }],
     ['#contact',  { x: 0.27,  y: 0.02,  s: 0.62, morph: 1, tint: 0.2, amp: 0.09, freq: 0.9, ry: -0.3 }],
   ];
   const gsap = window.gsap, ST = window.ScrollTrigger;
@@ -241,9 +241,8 @@ function init() {
 
   addEventListener('resize', () => { if (mobile) { measureHero(); Object.assign(S, snap(states[0][1])); } });
 
-  // Intro: liquid blob forms into the monogram after the load counter
   const intro = { v: 0 };
-  if (gsap) gsap.to(intro, { v: 1, duration: 2.2, delay: 0.9, ease: 'power3.inOut' }); else intro.v = 1;
+  intro.v = 1; // the hero still already shows the J, so the live scene starts as the J for a seamless crossfade
 
   const ptr = { x: 0, y: 0 }, tilt = { x: 0, y: 0 };
   addEventListener('pointermove', e => { ptr.x = e.clientX / innerWidth * 2 - 1; ptr.y = e.clientY / innerHeight * 2 - 1; }, { passive: true });
@@ -254,24 +253,21 @@ function init() {
   });
 
   const tmpC = new THREE.Color();
-  let fy = 0, running = false, visible = true, last = performance.now(), t = 0;
+  let firstFrame = true, running = false, visible = true, last = performance.now(), t = 0;
   function frame(now) {
     if (!running) return;
     requestAnimationFrame(frame);
     const dt = Math.min(0.05, (now - last) / 1000); last = now; t += dt;
     U.uTime.value = t; U.uAmp.value = S.amp; U.uFreq.value = S.freq;
     U.uMorph.value = Math.min(S.morph, intro.v);
-    const a = window.__active; let ty = 0;
-    if (a) { const r = a.getBoundingClientRect(); ty = 0.5 - (r.top + r.height / 2) / innerHeight; }
-    fy += (ty - fy) * 0.08;
     const vh = visH(), vw = vh * camera.aspect;
-    mesh.position.set(S.x * vw, (S.y + fy * S.tint) * vh, 0);
+    mesh.position.set(S.x * vw, S.y * vh, 0);
     mesh.scale.setScalar(S.s * vh / J_H);
-    mesh.scale.y *= 1 + 0.16 * S.tint; // droplet stretch in services
-    tilt.x += (ptr.y * 0.22 - tilt.x) * 0.05; tilt.y += (ptr.x * 0.35 - tilt.y) * 0.05;
+        tilt.x += (ptr.y * 0.22 - tilt.x) * 0.05; tilt.y += (ptr.x * 0.35 - tilt.y) * 0.05;
     mesh.rotation.set(tilt.x, S.ry + tilt.y + Math.sin(t * 0.3) * 0.12, 0);
     tmpC.copy(white).lerp(lime, S.tint * 0.14); mat.color.copy(tmpC);
     renderer.render(scene, camera);
+    if (firstFrame) { firstFrame = false; requestAnimationFrame(() => root.classList.add('gl-ready')); } // crossfade still -> live
   }
   const start = () => { if (!running && !document.hidden && visible) { running = true; last = performance.now(); requestAnimationFrame(frame); } };
   const stop = () => { running = false; };
@@ -294,6 +290,7 @@ const boot = () => { try { init(); } catch (e) { console.warn('WebGL init failed
 const whenIdle = fn => { const go = () => ('requestIdleCallback' in window ? requestIdleCallback(fn, { timeout: 1200 }) : setTimeout(fn, 200));
   document.readyState === 'complete' ? go() : addEventListener('load', go, { once: true }); };
 if (still) boot();
+else if (root.classList.contains('no-gl')) fallback(root.dataset.gl || 'early-check'); // decided by the inline head check
 else if (reduce) fallback('reduced-motion');
 else if (lowEnd) fallback('low-end');
 else { const g = glSupport();
