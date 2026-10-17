@@ -17,12 +17,11 @@
 <link rel="stylesheet" href="assets/style.css">
 
 <link rel="preload" as="image" href="assets/monogram-still.avif" type="image/avif" fetchpriority="high">
-<script>(function(d){d.classList.add('js');try{var q=location.search,f=/forcegl|still/.test(q),m=function(x){return matchMedia(x).matches},n=navigator,
- low=(n.deviceMemory&&n.deviceMemory<=2)||(n.hardwareConcurrency&&n.hardwareConcurrency<=2)||(n.connection&&n.connection.saveData),r='';
- if(m('(prefers-reduced-motion: reduce)'))r='reduced-motion';else if(low)r='low-end';else{var c=document.createElement('canvas'),g=c.getContext('webgl2')||c.getContext('webgl');
-  if(!g)r='no-webgl';else{var e=g.getExtension('WEBGL_debug_renderer_info'),s=e?String(g.getParameter(e.UNMASKED_RENDERER_WEBGL)):'';if(!f&&/swiftshader|llvmpipe|software|basic render/i.test(s))r='software-gl';
-  var l=g.getExtension('WEBGL_lose_context');l&&l.loseContext()}}
- if(r){d.classList.add('no-gl');d.dataset.gl=r}}catch(_){d.classList.add('no-gl')}})(document.documentElement);</script>
+<script>(function(d){d.classList.add('js');try{var n=navigator,r='';
+ // cheap checks only; the WebGL probe runs later, off the critical path (assets/scene.js)
+ if(matchMedia('(prefers-reduced-motion: reduce)').matches)r='reduced-motion';
+ else if((n.deviceMemory&&n.deviceMemory<=2)||(n.hardwareConcurrency&&n.hardwareConcurrency<=2)||(n.connection&&n.connection.saveData))r='low-end';
+ if(r){d.classList.add('no-gl');d.dataset.gl=r}}catch(_){}})(document.documentElement);</script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>

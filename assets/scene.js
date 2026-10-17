@@ -293,7 +293,7 @@ if (still) boot();
 else if (root.classList.contains('no-gl')) fallback(root.dataset.gl || 'early-check'); // decided by the inline head check
 else if (reduce) fallback('reduced-motion');
 else if (lowEnd) fallback('low-end');
-else { const g = glSupport();
+else whenIdle(() => { const g = glSupport(); // probe after first paint and load, when the main thread is idle
   if (g === 'none') fallback('no-webgl');
   else if (g === 'software' && !forceGL) fallback('software-gl');
-  else whenIdle(boot); }
+  else boot(); });
