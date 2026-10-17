@@ -201,6 +201,13 @@ if(matchMedia('(hover: hover) and (pointer: fine)').matches&&!reduce){document.b
  const finish=()=>{if(fin)return;fin=1;N.textContent=100;L.classList.add('done');document.body.classList.add('loaded');setTimeout(()=>L.remove(),1000)};
  requestAnimationFrame(f);setTimeout(finish,D+500)})();
 
+// Shop tab: prefer the Deji store, fall back to the Deji Drop site (pb on GitHub Pages) when the store is unreachable.
+// Links default to the working fallback; a no-cors probe with a short timeout upgrades them if the store answers.
+(()=>{const SHOP='https://shop.bepojoseph.xyz/',links=$$('[data-shop]');if(!links.length||!window.fetch)return;
+ const ctl='AbortController' in window?new AbortController():null,timer=setTimeout(()=>ctl&&ctl.abort(),3000);
+ fetch(SHOP,{mode:'no-cors',cache:'no-store',signal:ctl&&ctl.signal}).then(()=>{links.forEach(a=>{a.href=SHOP;a.dataset.shopState='store'})})
+  .catch(()=>{links.forEach(a=>a.dataset.shopState='fallback')}).finally(()=>clearTimeout(timer))})();
+
 // Clock + year
 const clk=$('#clock');const tick=()=>{clk.textContent=new Date().toLocaleTimeString('en-CA',{timeZone:'America/Toronto',hour:'2-digit',minute:'2-digit'})+' Toronto'};tick();setInterval(tick,30000);
 $('#yr').textContent=new Date().getFullYear();

@@ -127,6 +127,9 @@ body.has-cursor,body.has-cursor a,body.has-cursor button{cursor:none}
 .top.open{transform:none}
 .logo{font:400 22px/1 var(--serif);letter-spacing:.01em}
 .logo span{color:var(--lime)}
+.shop-link{margin-left:auto;margin-right:12px;padding:10px 16px;border:1px solid var(--line);border-radius:99px;background:rgba(11,11,12,.4);position:relative;z-index:2;transition:color .3s,border-color .3s}
+.shop-link:hover{color:var(--lime);border-color:var(--lime)}
+.menu nav a .ext{font-size:.45em;color:var(--lime);align-self:center}
 .menu-btn{display:flex;gap:12px;align-items:center;padding:10px 16px;border:1px solid var(--line);border-radius:99px;background:rgba(11,11,12,.4);position:relative;z-index:2}
 .menu-btn i{width:18px;height:8px;position:relative}
 .menu-btn i::before,.menu-btn i::after{content:'';position:absolute;left:0;right:0;height:1.5px;background:currentColor;transition:transform .5s var(--ease)}
