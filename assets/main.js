@@ -1,5 +1,4 @@
 const GH='https://github.com/josephbepocode/';
-const COL={featured:'#ff4d8d',web:'#4da3ff',games:'#ff7a45',fintech:'#2fd38a',ai:'#b07cff',tools:'#ffc23d'};
 const NAME={featured:'Featured',web:'Web',games:'Games',fintech:'Fintech',ai:'AI',tools:'Tools'};
 // Every entry is described only from its README or source code.
 const P=[
@@ -85,24 +84,113 @@ const P=[
  d:'A growing library of small Python programs, including a sales calculator and a playful snake that paints random ASCII art.',
  s:['Python']},
 ];
-const grid=document.getElementById('grid');
-const esc=s=>s.replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
-function card(p){const c=COL[p.c[0]];
- const thumb=p.img?`<img src="assets/projects/${p.img}.webp" alt="Screenshot of ${esc(p.t)}" decoding="async" width="800" height="500">`
-  :`<div class="cover" aria-hidden="true"><i>${esc(p.glyph||'*')}</i><b>${esc(p.t)}</b><small>${p.s.slice(0,3).map(esc).join(' · ')}</small></div>`;
- const badge=p.live?'<span class="badge live">Live</span>':p.priv?'<span class="badge">Private</span>':p.status?`<span class="badge">${esc(p.status)}</span>`:'';
- const links=[p.live&&`<a href="${p.live}" target="_blank" rel="noopener">Live site ↗</a>`,p.repo&&`<a href="${GH+p.repo}" target="_blank" rel="noopener">Code ↗</a>`].filter(Boolean);
- if(!links.length)links.push(`<span class="na">${p.priv?'Code is private':'Demo on request'}</span>`);
- return `<article class="card${p.feat?' feat':''}" style="--c:${c}" data-c="${p.c.join(' ')}"><div class="thumb">${badge}${thumb}</div><div class="body"><span class="cat">${p.c.map(x=>NAME[x]).join(' / ')}</span><h3>${esc(p.t)}</h3><p>${esc(p.d)}</p><ul class="stack">${p.s.map(x=>`<li>${esc(x)}</li>`).join('')}</ul><div class="links">${links.join('')}</div></div></article>`}
-function render(f){grid.innerHTML=P.filter(p=>f==='all'||p.c.includes(f)).map(card).join('')}
-render('all');document.getElementById('count').textContent=P.length;
-document.querySelectorAll('.filters button').forEach(b=>{const f=b.dataset.f;b.insertAdjacentHTML('beforeend',`<sup>${f==='all'?P.length:P.filter(p=>p.c.includes(f)).length}</sup>`);
- b.onclick=()=>{document.querySelectorAll('.filters button').forEach(x=>x.setAttribute('aria-pressed',x===b));render(f)}});
-const root=document.documentElement;
-document.getElementById('theme').onclick=()=>{const dark=root.dataset.theme?root.dataset.theme==='dark':!matchMedia('(prefers-color-scheme: light)').matches;root.dataset.theme=dark?'light':'dark';try{localStorage.setItem('theme',root.dataset.theme)}catch(e){}};
-const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');io.unobserve(e.target)}}),{threshold:.12});
-document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
-document.getElementById('yr').textContent=new Date().getFullYear();
-const form=document.getElementById('form'),st=document.getElementById('status');
-form.addEventListener('submit',async e=>{e.preventDefault();st.textContent='Sending...';
- try{const r=await fetch(form.action,{method:'POST',body:new FormData(form),headers:{Accept:'application/json'}});st.textContent=r.ok?'Thanks! I will get back to you soon.':'Something went wrong. Please email me directly.';if(r.ok)form.reset()}catch(_){st.textContent='Network error. Please email me directly.'}});
+// Year = repo creation year on GitHub (blank when there is no repo to check).
+const YEAR={'Agent Forge':2026,'Echo':2026,'Warehouse Digital Twin':2026,'Pixel2Page':2026,'Signal Terminal':2026,'AI Vision Studio':2026,'AI Music Lab':2026,'City Traffic Sim':2026,'Browser Code Agent':2026,'Deji Design Studio':2026,'Ontario Life':2026,'Ontario Gas Prices':2026,'Gym Progress Tracker':2026,'Deji Drop 01':2026,'Braids By Tete':2025,'AI Bookkeeper':2026,'Resume Builder':2025,'ScanWithBepo':2024,'EduChain':2024,'TimelessNFT':2024,'Storex':2025,'SvelteKit Starter':2025,'Little Lemon':2024,'Hot Dog Profit Calculator':2024,'Python Apps':2024};
+// Editorial category line for each project.
+const CAT={'Agent Forge':'AI Agents · Dev Tools','Echo':'Voice AI · On-Device','Warehouse Digital Twin':'3D Simulation · Robotics','Pixel2Page':'Vision AI · Web','Signal Terminal':'Fintech · AI','AI Vision Studio':'Computer Vision','AI Music Lab':'Generative Audio','City Traffic Sim':'3D Simulation · Urban','Browser Code Agent':'AI Agents · Python','Deji Design Studio':'Generative Design · Fashion','Ontario Life':'Game · Life Sim'};
+// Top three = the most technically demanding builds; then three more strong ones.
+const FEAT=['Agent Forge','Browser Code Agent','Warehouse Digital Twin','City Traffic Sim'];
+// Toolkit: only tech that appears in the projects above.
+const TOOLS_A=['three.js','WebGPU','WebLLM','transformers.js','Pyodide','MediaPipe','Tone.js','Magenta','Canvas','Web Audio'];
+const TOOLS_B=['React','Next.js','Node.js','Express','Python','Flask','Django','pandas','DuckDB','Solidity','Tailwind CSS','Git'];
+
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+P.forEach(p=>{p.y=YEAR[p.t]||'';p.cat=CAT[p.t]||p.c.filter(c=>c!=='featured').map(c=>NAME[c]).join(' · ')});
+
+// Marquee: duplicate the list so the CSS loop is seamless.
+const fill=(id,arr)=>{const h=arr.map(t=>`<li>${esc(t)}</li><li class="star" aria-hidden="true">✳</li>`).join('');$(id).innerHTML=h+h.replace(/<li>/g,'<li aria-hidden="true">')};
+fill('#track-a',TOOLS_A);fill('#track-b',TOOLS_B);
+
+// Featured cards
+const fp=FEAT.map(t=>P.find(p=>p.t===t)).filter(Boolean);
+$('#featured').innerHTML=fp.map((p,i)=>{
+ const href=p.live||(p.repo&&GH+p.repo)||'#';
+ return `<article class="fcard reveal${i<3?' best':''}">
+  <a class="fimg" href="${href}" target="_blank" rel="noopener" aria-label="Open ${esc(p.t)}">
+   <img src="assets/projects/${p.img}.webp" alt="Screenshot of ${esc(p.t)}" loading="lazy" decoding="async" width="800" height="500">
+   <span class="view mono">${p.live?'Live Project':'View Code'} ↗</span></a>
+  <div class="fmeta">
+   <span class="num mono">${String(i+1).padStart(2,'0')}</span>
+   <p class="cat mono">${esc(p.cat)} · ${p.y}</p>
+   <h3>${esc(p.t)}</h3>
+   <p class="desc">${esc(p.d)}</p>
+   <ul class="tags mono">${p.s.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>
+   <div class="links mono">${p.live?`<a href="${p.live}" target="_blank" rel="noopener">Live ↗</a>`:''}${p.repo?`<a href="${GH+p.repo}" target="_blank" rel="noopener">Code ↗</a>`:''}</div>
+  </div></article>`}).join('');
+
+// All projects list
+$('#all-n').textContent=P.length;
+const cats=['all','ai','web','games','fintech','tools'];
+$('#filters').innerHTML=cats.map(c=>`<button type="button" data-f="${c}" aria-pressed="${c==='all'}">${c==='all'?'All':NAME[c]}<sup>${c==='all'?P.length:P.filter(p=>p.c.includes(c)).length}</sup></button>`).join('');
+function row(p,i){
+ const href=p.live||(p.repo&&GH+p.repo);
+ const thumb=p.img?`<img src="assets/projects/${p.img}.webp" alt="" loading="lazy" decoding="async">`:`<i aria-hidden="true">${esc(p.glyph||'*')}</i>`;
+ const tag=p.live?'Live':p.repo?'Code':p.priv?'Private':(p.status||'');
+ const inner=`<span class="ri mono">${String(i+1).padStart(2,'0')}</span><span class="rt">${thumb}</span><span class="rn"><b>${esc(p.t)}</b><small>${esc(p.d)}</small></span><span class="rc mono">${esc(p.cat)}</span><span class="ry mono">${p.y}</span><span class="rs mono">${esc(tag)}${href?' ↗':''}</span>`;
+ return `<li>${href?`<a href="${href}" target="_blank" rel="noopener">${inner}</a>`:`<div>${inner}</div>`}</li>`}
+function render(f){$('#list').innerHTML=P.filter(p=>f==='all'||p.c.includes(f)).map(row).join('')}
+render('all');
+$$('#filters button').forEach(b=>b.onclick=()=>{$$('#filters button').forEach(x=>x.setAttribute('aria-pressed',x===b));render(b.dataset.f)});
+$('#all-btn').onclick=e=>{const b=e.currentTarget,o=b.getAttribute('aria-expanded')==='true';b.setAttribute('aria-expanded',!o);$('#all').hidden=o;if(!o)$('#all').classList.add('on')};
+
+// Stats
+$('#st-all').dataset.to=P.length;$('#st-ai').dataset.to=P.filter(p=>p.c.includes('ai')).length;$('#st-live').dataset.to=P.filter(p=>p.live).length;
+
+// Menu
+const mb=$('#menu-btn'),bar=$('#top-bar');
+mb.onclick=()=>{const o=mb.getAttribute('aria-expanded')==='true';mb.setAttribute('aria-expanded',!o);bar.classList.toggle('open',!o);document.body.classList.toggle('lock',!o)};
+$$('#menu a[href^="#"]').forEach(a=>a.addEventListener('click',()=>{mb.setAttribute('aria-expanded','false');bar.classList.remove('open');document.body.classList.remove('lock')}));
+
+// About statement: word-by-word highlight tied to scroll
+const st=$('#statement');st.innerHTML=st.textContent.trim().split(/\s+/).map(w=>`<span>${esc(w)} </span>`).join('');
+const words=[...st.children];
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// Reveal on scroll
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');io.unobserve(e.target);
+ if(e.target.matches('.stats'))countUp()}}),{threshold:.15,rootMargin:'0px 0px -5% 0px'});
+$$('.reveal,.stats,.sec-head,.talk,.toolkit').forEach(el=>io.observe(el));
+function countUp(){$$('.stats b').forEach(b=>{const to=+b.dataset.to,t0=performance.now();
+ if(reduce){b.textContent=to;return}
+ const f=t=>{const k=Math.min(1,(t-t0)/1200);b.textContent=Math.round(to*(1-Math.pow(1-k,3)));if(k<1)requestAnimationFrame(f)};requestAnimationFrame(f)})}
+
+// Scroll-linked effects (progress bar, header state, about word highlight)
+let ticking=false;
+function onScroll(){ticking=false;const y=scrollY,h=document.documentElement.scrollHeight-innerHeight;
+ $('#bar').style.transform=`scaleX(${h>0?y/h:0})`;bar.classList.toggle('scrolled',y>40);
+ const r=st.getBoundingClientRect(),k=Math.min(1,Math.max(0,(innerHeight*.85-r.top)/(r.height+innerHeight*.35)));
+ const n=Math.round(words.length*k);words.forEach((w,i)=>w.classList.toggle('lit',reduce||i<n));
+ // active service = the one closest to the viewport centre
+ let best=null,bd=1e9;svcItems.forEach(li=>{const b=li.getBoundingClientRect(),d=Math.abs(b.top+b.height/2-innerHeight/2);if(d<bd){bd=d;best=li}});
+ svcItems.forEach(li=>li.classList.toggle('active',li===best&&bd<innerHeight*.4));
+ window.__active=best&&bd<innerHeight*.4?best:null}
+const svcItems=$$('#svc li');
+addEventListener('scroll',()=>{if(!ticking){ticking=true;requestAnimationFrame(onScroll)}},{passive:true});onScroll();
+
+// Smooth scrolling (Lenis) wired to GSAP ScrollTrigger
+window.__reduce=reduce;
+if(!reduce&&window.Lenis){const lenis=new Lenis({lerp:.1,smoothWheel:true});window.__lenis=lenis;
+ if(window.gsap&&window.ScrollTrigger){gsap.registerPlugin(ScrollTrigger);lenis.on('scroll',ScrollTrigger.update);gsap.ticker.add(t=>lenis.raf(t*1000));gsap.ticker.lagSmoothing(0)}
+ else{const raf=t=>{lenis.raf(t);requestAnimationFrame(raf)};requestAnimationFrame(raf)}
+ $$('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{const id=a.getAttribute('href');if(id.length<2)return;const t=$(id);if(!t)return;e.preventDefault();lenis.scrollTo(t,{offset:0,duration:1.4});history.replaceState(null,'',id)}))}
+
+// Custom cursor dot (fine pointers only)
+const cur=$('#cursor');
+if(matchMedia('(hover: hover) and (pointer: fine)').matches&&!reduce){document.body.classList.add('has-cursor');let cx=innerWidth/2,cy=innerHeight/2,tx=cx,ty=cy;
+ addEventListener('pointermove',e=>{tx=e.clientX;ty=e.clientY;cur.classList.add('show')},{passive:true});
+ document.addEventListener('pointerleave',()=>cur.classList.remove('show'));
+ document.addEventListener('pointerover',e=>cur.classList.toggle('big',!!e.target.closest('a,button,[tabindex],.fcard')));
+ const loop=()=>{cx+=(tx-cx)*.25;cy+=(ty-cy)*.25;cur.style.transform=`translate(${cx}px,${cy}px)`;requestAnimationFrame(loop)};loop()}
+
+// Load counter 0 to 100: cosmetic, never waits for WebGL, capped at ~1.1s
+(()=>{const L=$('#loader'),N=$('#load-n');if(reduce){L.remove();document.body.classList.add('loaded');return}
+ const t0=performance.now(),D=1100;const f=t=>{const k=Math.min(1,(t-t0)/D);N.textContent=Math.round(100*(1-Math.pow(1-k,2)));
+  if(k<1)requestAnimationFrame(f);else finish()};let fin=0;
+ const finish=()=>{if(fin)return;fin=1;N.textContent=100;L.classList.add('done');document.body.classList.add('loaded');setTimeout(()=>L.remove(),1000)};
+ requestAnimationFrame(f);setTimeout(finish,D+500)})();
+
+// Clock + year
+const clk=$('#clock');const tick=()=>{clk.textContent=new Date().toLocaleTimeString('en-CA',{timeZone:'America/Toronto',hour:'2-digit',minute:'2-digit'})+' Toronto'};tick();setInterval(tick,30000);
+$('#yr').textContent=new Date().getFullYear();
+
