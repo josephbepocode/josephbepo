@@ -186,25 +186,26 @@ function init() {
 
   // Hero placement: J height = 120% of the headline, centre near the right edge so ~20% is cropped off.
   const H = { x: 0.3, y: 0, s: 0.6 };
+  // The live J is placed exactly over the hero still (.hero-still), which CSS positions against the headline.
+  // In the still image the J content is 833/873 of its height and the mesh origin sits at (44.9%, 50.4%).
   function measureHero() {
-    const h1 = document.querySelector('.hero h1'); if (!h1) return;
-    const r = h1.getBoundingClientRect(), top = r.top + scrollY;
-    const hpx = r.height * 1.2, wpx = hpx * 0.56;
-    H.s = hpx / innerHeight;
-    H.x = (innerWidth - wpx * 0.6) / innerWidth - 0.5;
-    H.y = 0.5 - (top + r.height / 2) / innerHeight;
+    const el = document.querySelector('.hero-still'); if (!el) return;
+    const r = el.getBoundingClientRect(), top = r.top + scrollY;
+    H.s = (r.height * 833 / 873) / (833 / 860) / innerHeight; // s = J_H*scale as a fraction of the viewport height
+    H.x = (r.left + r.width * 0.449) / innerWidth - 0.5;
+    H.y = 0.5 - (top + r.height * 0.504) / innerHeight;
   }
   measureHero();
 
   // State: x,y = fractions of the viewport from centre; s = object height as a fraction of viewport height
-  const S = { x: H.x, y: H.y, s: H.s, morph: 1, tint: 0, amp: 0.09, freq: 0.9, rx: 0, ry: -0.25 };
+  const S = { x: H.x, y: H.y, s: H.s, morph: 1, tint: 0, amp: 0.09, freq: 0.9, rx: 0, ry: -0.32, fade: 1 };
   const states = [
-    ['#home',     { x: () => H.x, y: () => H.y, s: () => H.s, morph: 1, tint: 0, amp: 0.09, freq: 0.9, ry: -0.25 }],
-    ['#toolkit',  { x: 0.34,  y: -0.04, s: 0.3,  morph: 0.88, tint: 0,   amp: 0.09, freq: 0.9, ry: 0 }],
-    ['#about',    { x: 0.45,  y: 0.34,  s: 0.22, morph: 0.88, tint: 0,   amp: 0.08, freq: 0.8, ry: 0.3 }],
-    ['#services', { x: 0.33,  y: 0,     s: 0.4,  morph: 0.88, tint: 1,   amp: 0.07, freq: 0.55, ry: 0 }], // softened J, lime-tinted chrome
-    ['#work',     { x: 0.45,  y: -0.32, s: 0.2,  morph: 0.88, tint: 0,   amp: 0.08, freq: 0.8, ry: 0 }],
-    ['#contact',  { x: 0.27,  y: 0.02,  s: 0.62, morph: 1, tint: 0.2, amp: 0.09, freq: 0.9, ry: -0.3 }],
+    ['#home',     { x: () => H.x, y: () => H.y, s: () => H.s, morph: 1, tint: 0, amp: 0.09, freq: 0.9, ry: -0.32, fade: 1 }],
+    ['#toolkit',  { x: 0.34,  y: -0.04, s: 0.3,  morph: 0.88, tint: 0,   amp: 0.09, freq: 0.9, ry: 0, fade: 1 }],
+    ['#about',    { x: 0.45,  y: 0.34,  s: 0.22, morph: 0.88, tint: 0,   amp: 0.08, freq: 0.8, ry: 0.3, fade: 1 }],
+    ['#services', { x: 0.33,  y: 0,     s: 0.4,  morph: 0.88, tint: 1,   amp: 0.07, freq: 0.55, ry: 0, fade: 1 }], // softened J, lime-tinted chrome
+    ['#work',     { x: 0.3,   y: 0,     s: 0.45, morph: 0.95, tint: 0,   amp: 0.08, freq: 0.8, ry: -0.2, fade: 0 }], // hidden across Work
+    ['#contact',  { x: 0.27,  y: 0.02,  s: 0.62, morph: 1, tint: 0.2, amp: 0.09, freq: 0.9, ry: -0.3, fade: 1 }],
   ];
   const gsap = window.gsap, ST = window.ScrollTrigger;
   // One scrubbed GSAP timeline over the whole page (timeline units = scroll pixels), rebuilt when layout changes.
@@ -266,8 +267,10 @@ function init() {
         tilt.x += (ptr.y * 0.22 - tilt.x) * 0.05; tilt.y += (ptr.x * 0.35 - tilt.y) * 0.05;
     mesh.rotation.set(tilt.x, S.ry + tilt.y + Math.sin(t * 0.3) * 0.12, 0);
     tmpC.copy(white).lerp(lime, S.tint * 0.14); mat.color.copy(tmpC);
+    canvas.style.setProperty('--fade', S.fade.toFixed(3));
+    if (S.fade < 0.01 && !firstFrame) return; // fully faded (Work section): skip the draw
     renderer.render(scene, camera);
-    if (firstFrame) { firstFrame = false; requestAnimationFrame(() => root.classList.add('gl-ready')); } // crossfade still -> live
+    if (firstFrame) { firstFrame = false; requestAnimationFrame(() => root.classList.add('gl-ready')); setTimeout(() => root.classList.add('gl-settled'), 1400); } // crossfade still -> live
   }
   const start = () => { if (!running && !document.hidden && visible) { running = true; last = performance.now(); requestAnimationFrame(frame); } };
   const stop = () => { running = false; };

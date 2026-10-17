@@ -91,13 +91,16 @@ em{font-family:var(--serif);font-style:italic;font-weight:400}
 
 /* Canvas + fallback + grain */
 .gl{position:fixed;inset:0;width:100vw;height:100vh;z-index:0;pointer-events:none;opacity:0;transition:opacity 1.2s ease .4s}
-.gl-ready .gl{opacity:1}
+.gl-ready .gl{opacity:var(--fade,1)}
+.gl-settled .gl{transition:none}
 .gl-ready.gl-hidden .gl{opacity:0;transition:opacity .6s ease}
 /* Hero still: the rendered chrome J. Paints immediately (LCP), crossfades out once WebGL draws its first frame;
    stays as the fallback on reduced motion, no WebGL, software GL or low-end devices. */
 .headline{position:relative}
 .headline h1{position:relative;z-index:1}
-.hero-still{position:absolute;z-index:0;pointer-events:none;top:-10%;height:120%;aspect-ratio:508/873;right:calc(-1 * var(--pad));transition:opacity 1.2s ease}
+/* --F = display size; the still is 2.2F tall, its J content (95.4% of the image) ends on Joseph's baseline,
+   and the hook sits 64px from the viewport's right edge. scene.js reads this box to place the live J. */
+.hero-still{position:absolute;z-index:0;pointer-events:none;height:calc(2.2 * var(--F));aspect-ratio:508/873;right:calc(64px - var(--pad) - .05 * var(--F));bottom:calc(var(--base) - .05 * var(--F));transition:opacity 1.2s ease}
 .hero-still img{height:100%;width:auto}
 .gl-ready .hero-still{opacity:0}
 .no-gl .gl{display:none}
@@ -131,8 +134,12 @@ body.has-cursor,body.has-cursor a,body.has-cursor button{cursor:none}
 .top.open{transform:none}
 .logo{font:400 22px/1 var(--serif);letter-spacing:.01em}
 .logo span{color:var(--lime)}
-.shop-link{margin-left:auto;margin-right:12px;padding:10px 16px;border:1px solid var(--line);border-radius:99px;background:rgba(11,11,12,.4);position:relative;z-index:2;transition:color .3s,border-color .3s}
-.shop-link:hover{color:var(--lime);border-color:var(--lime)}
+.shop-link{margin-left:auto;margin-right:12px;padding:10px 16px;border:1px solid rgba(198,255,61,.55);border-radius:99px;background:transparent;position:relative;z-index:2;display:inline-flex;align-items:center;gap:8px;transition:color .3s,border-color .3s,background .3s}
+.shop-link span{color:var(--lime);font-size:14px;line-height:1;transition:transform .4s var(--ease)}
+.shop-link:hover{border-color:var(--lime);background:rgba(198,255,61,.08)}
+.shop-link:hover span{transform:translate(2px,-2px)}
+.top .menu-btn{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.top.open .menu-btn{background:transparent;color:var(--fg);border-color:var(--line)}
 .menu nav a .ext{font-size:.45em;color:var(--lime);align-self:center}
 .menu-btn{display:flex;gap:12px;align-items:center;padding:10px 16px;border:1px solid var(--line);border-radius:99px;background:rgba(11,11,12,.4);position:relative;z-index:2}
 .menu-btn i{width:18px;height:8px;position:relative}
@@ -173,7 +180,9 @@ body.has-cursor,body.has-cursor a,body.has-cursor button{cursor:none}
 @keyframes pulse{50%{opacity:.35}}
 .hero-body{margin:auto 0;padding:24px 0;position:relative}
 .hero .kicker{color:var(--lime);margin-bottom:14px}
-.hero h1 .l2{text-align:right;padding-right:clamp(40px,9vw,160px)}
+.hero{--F:clamp(64px,12vw,200px);--base:calc(.233 * var(--F))}
+.hero h1 .line{padding-bottom:.12em}
+.hero h1 .l2{margin-top:-.2em;text-align:right;padding-right:calc(64px + .54 * var(--F) - var(--pad))}
 .hero-foot{display:flex;flex-direction:column;align-items:flex-start;gap:22px;margin-top:clamp(18px,3vh,32px);max-width:min(560px,48vw)}
 .hero .lead{max-width:40ch;font-size:clamp(17px,1.5vw,22px);line-height:1.45;color:var(--fg)}
 .rise{transition:opacity 1s var(--ease) .5s,transform 1s var(--ease) .5s}
@@ -320,7 +329,7 @@ body.has-cursor,body.has-cursor a,body.has-cursor button{cursor:none}
   .scroll-cue{display:none}
   .hero h1 .l2{text-align:left;padding-right:0}
   .hero-foot{max-width:none}
-  .hero-still{right:calc(-1 * var(--pad) - 4vw)}
+  .hero-still{height:calc(1.9 * var(--F));right:calc(16px - var(--pad) - .045 * var(--F))} /* fully in frame, 16px margin, ~15% smaller */
   .hero-meta span:last-child{display:none}
   .about-grid{grid-template-columns:1fr}
   .about-grid .portrait{max-width:240px}
