@@ -144,7 +144,7 @@ body.has-cursor,body.has-cursor a,body.has-cursor button{cursor:none}
 .svc .more>div{overflow:hidden}
 .svc p{max-width:56ch;color:var(--mute);padding-top:16px;font-size:17px}
 .tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
-.tags li{padding:6px 12px;border:1px solid var(--line);border-radius:99px;color:var(--fg);font-size:11px;background:rgba(11,11,12,.4)}
+.tags li{white-space:nowrap;padding:6px 12px;border:1px solid var(--line);border-radius:99px;color:var(--fg);font-size:11px;background:rgba(11,11,12,.4)}
 .svc li:hover,.svc li:focus-visible,.svc li.active{}
 .svc li:hover .more,.svc li:focus-within .more,.svc li.active .more{grid-template-rows:1fr}
 .svc li:hover::before,.svc li:focus-visible::before,.svc li.active::before{transform:scaleX(1)}

@@ -157,9 +157,9 @@ function init() {
   const states = [
     ['#home',     { x: mobile ? 0.3 : 0,  y: mobile ? 0.2 : 0.02, s: mobile ? 0.5 : 1, morph: 1, tint: 0 }],
     ['#toolkit',  { x: mobile ? 0.22 : 0.3, y: -0.05, s: mobile ? 0.34 : 0.42, morph: 0, tint: 0 }],
-    ['#about',    { x: mobile ? 0.3 : -0.34, y: 0.18, s: mobile ? 0.3 : 0.5,  morph: 0, tint: 0.2 }],
-    ['#services', { x: mobile ? 0.34 : 0.31, y: 0,    s: mobile ? 0.26 : 0.52, morph: 0, tint: 1 }],
-    ['#work',     { x: mobile ? 0.36 : 0.4,  y: -0.32, s: mobile ? 0.22 : 0.34, morph: 0.15, tint: 0 }],
+    ['#about',    { x: mobile ? 0.48 : -0.34, y: 0.18, s: mobile ? 0.3 : 0.5,  morph: 0, tint: 0.2 }],
+    ['#services', { x: mobile ? 0.5 : 0.31, y: 0,    s: mobile ? 0.26 : 0.52, morph: 0, tint: 1 }],
+    ['#work',     { x: mobile ? 0.52 : 0.4,  y: -0.32, s: mobile ? 0.22 : 0.34, morph: 0.15, tint: 0 }],
     ['#contact',  { x: mobile ? 0 : 0.27,   y: mobile ? -0.18 : 0.02, s: mobile ? 0.6 : 0.95, morph: 1, tint: 0.35 }],
   ];
   const gsap = window.gsap, ST = window.ScrollTrigger;
