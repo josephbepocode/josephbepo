@@ -1,3 +1,5 @@
-# Warehouse Floor portfolio preview (v3)
+# Warehouse Floor portfolio preview (v4)
 
-Preview-only. Set `IS_PREVIEW = false` in portfolio-v3 `src/content.ts` and rebuild to go live (strips preview label, footer note, noindex).
+Bright light theme + lazy three.js hero. Preview-only.
+Palette tokens in source `src/tokens.ts` (activePalette).
+Go-live: set IS_PREVIEW=false in content.ts and rebuild.
