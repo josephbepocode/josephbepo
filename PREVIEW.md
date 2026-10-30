@@ -1,6 +1,3 @@
-# Warehouse Floor portfolio preview (v2 critic pass)
+# Warehouse Floor portfolio preview (v3)
 
-Preview-only. Not published to bepojoseph.xyz / main.
-
-Critic fixes: blurred showreel, solid sticky bar + hide over hero CTAs,
-warehouse SVG floor, aligned About strip.
+Preview-only. Set `IS_PREVIEW = false` in portfolio-v3 `src/content.ts` and rebuild to go live (strips preview label, footer note, noindex).
