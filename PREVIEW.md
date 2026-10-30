@@ -1,7 +1,6 @@
-# Warehouse Floor portfolio preview
+# Warehouse Floor portfolio preview (v2 critic pass)
 
-Preview-only build. Not published to bepojoseph.xyz / GitHub Pages main.
+Preview-only. Not published to bepojoseph.xyz / main.
 
-- Direction: near-black + safety yellow, conveyor project pallets, cursor forklift (desktop)
-- Hero showreel from Football Lab Remotion clips + Warehouse Digital Twin still
-- Public resume only (no phone)
+Critic fixes: blurred showreel, solid sticky bar + hide over hero CTAs,
+warehouse SVG floor, aligned About strip.
